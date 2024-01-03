@@ -14,9 +14,10 @@ describe("gameboard class ship placement", () => {
   gameboard.placeShip(ship2, x2, y2, "vertical");
 
   test("ship can be placed vertically or horizontally and seen specific coords", () => {
-    for (let i = 0; i < shipLength; ++i)
+    for (let i = 0; i < shipLength; ++i) {
       expect(gameboard.getTileAt(x + i, y).ship).toBe(ship);
-    expect(gameboard.getTileAt(x2, y2 + i).ship).toBe(ship2);
+      expect(gameboard.getTileAt(x2, y2 + i).ship).toBe(ship2);
+    }
   });
   test("coords with no ship return null", () => {
     expect(gameboard.getTileAt(x + shipLength, y).ship).toBeNull();
@@ -38,12 +39,13 @@ describe("gameboard class ship placement", () => {
   test("gameboards tracking if all ships are destroyed", () => {
     for (let i = 1; i < shipLength; ++i) {
       gameboard.receiveAttack(x + i, y);
-
-      expect(gameboard.areAllShipDestroyed()).toBeFalsy();
-      for (let i = 0; i < shipLength; ++i) {
-        gameboard.receiveAttack(x2, y2 + i);
-      }
-      expect(gameboard.areAllShipDestroyed()).toBeTruthy();
     }
+    expect(gameboard.areAllShipDestroyed()).toBeFalsy();
+    for (let i = 0; i < shipLength; ++i) {
+      gameboard.receiveAttack(x2, y2 + i);
+    }
+
+    console.log(gameboard.tiles);
+    expect(gameboard.areAllShipDestroyed()).toBeTruthy();
   });
 });
