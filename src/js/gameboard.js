@@ -2,23 +2,27 @@ import { Tile } from "./tile.js";
 const GAMEBOARD_SIZE = 10;
 
 export class Gameboard {
-  constructor() {
+  constructor(size = GAMEBOARD_SIZE) {
     this.tiles = [];
     this.ships = [];
-    for (let y = 0; y < GAMEBOARD_SIZE; ++y) {
+    for (let y = 0; y < size; ++y) {
       this.tiles.push([]);
-      for (let x = 0; x < GAMEBOARD_SIZE; ++x) {
+      for (let x = 0; x < size; ++x) {
         this.tiles[y].push(new Tile());
       }
     }
   }
-  placeShip(ship, x, y, dir) {
+  placeShip(ship, x, y, dir = "horizontal") {
     this.ships.push(ship);
     this.tiles[y][x].ship = ship;
     if (dir === "horizontal") {
-      for (let i = 1; i < ship.length; ++i) this.tiles[y][x + i].ship = ship;
+      for (let i = 1; i < ship.length; ++i) {
+        this.tiles[y][x + i].ship = ship;
+      }
     } else {
-      for (let i = 1; i < ship.length; ++i) this.tiles[y + i][x].ship = ship;
+      for (let i = 1; i < ship.length; ++i) {
+        this.tiles[y + i][x].ship = ship;
+      }
     }
   }
   getTileAt(x, y) {
