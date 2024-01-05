@@ -12,7 +12,7 @@ export class Gameboard {
       }
     }
   }
-  placeShip(ship, x, y, dir = "horizontal") {
+  placeShip(ship, y, x, dir = "horizontal") {
     this.ships.push(ship);
     this.tiles[y][x].ship = ship;
     if (dir === "horizontal") {
@@ -25,10 +25,10 @@ export class Gameboard {
       }
     }
   }
-  getTileAt(x, y) {
+  getTileAt(y, x) {
     return this.tiles[y][x];
   }
-  receiveAttack(x, y) {
+  receiveAttack(y, x) {
     this.tiles[y][x].isHit = true;
     if (this.tiles[y][x].ship) {
       this.tiles[y][x].ship.hit();

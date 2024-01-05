@@ -96,4 +96,18 @@ describe("legal random ship placement", () => {
     gameboard1.placeShip(ship_s2, 5, 5, "horizontal");
     expect(player1.getShipPlacementOpportunities(ship_s1)).toHaveLength(88);
   });
+  test("random ship placement on empty gameboard", () => {
+    const spy = jest.spyOn(Math, "random");
+
+    spy.mockReturnValue(0.0);
+
+    const ship_s1 = new Ship(1);
+    player1.placeShipRandomly(new Ship(4));
+    expect(
+      player1.getShipPlacementOpportunities(ship_s1).length,
+    ).toBeGreaterThanOrEqual(82);
+    expect(
+      player1.getShipPlacementOpportunities(ship_s1).length,
+    ).toBeLessThanOrEqual(90);
+  });
 });

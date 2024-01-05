@@ -1,5 +1,8 @@
-import { Queue } from "./queue";
+import { Ship } from "./ship";
 
+function RandomNum(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
 export class Player {
   constructor(ownGameboard, enemyGameboard, isAI = false) {
     if (isAI) this.placeShips = AI.prototype.placeShips;
@@ -9,6 +12,22 @@ export class Player {
     this.enemyGameboard = enemyGameboard;
   }
 
+  generateShips() {
+    this.placeShipRandomly(new Ship(4));
+  }
+  placeShipRandomly(ship) {
+    const directions = ["horizontal", "vertical"];
+
+    const shipDirection = directions[RandomNum(0, directions.length)];
+    const placementOpportunities = this.getShipPlacementOpportunities(
+      ship,
+      shipDirection,
+    );
+
+    const [y, x] =
+      placementOpportunities[RandomNum(0, placementOpportunities.length)];
+    this.ownGameboard.placeShip(ship, y, x, shipDirection);
+  }
   getShipPlacementOpportunities(ship, direction = "horizontal") {
     let x_move = 0;
     let y_move = 0;
@@ -72,9 +91,7 @@ export class Player {
 }
 
 class Human {}
-class AI {
-  placeShips() {}
-}
+class AI {}
 
 console.log(1);
 console.log(1);
