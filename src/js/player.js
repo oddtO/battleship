@@ -1,12 +1,13 @@
 import { Ship } from "./ship";
+import { AI } from "./ai";
+import { RandomNum } from "./random";
 
-function RandomNum(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
 export class Player {
   constructor(ownGameboard, enemyGameboard, isAI = false) {
-    if (isAI) this.placeShips = AI.prototype.placeShips;
-    else this.placeShips = Human.prototype.placeShips;
+    if (isAI) {
+      this.getAttackOpportunities = AI.prototype.getAttackOpportunities;
+      this.makeMove = AI.prototype.attackRandomly;
+    }
 
     this.ownGameboard = ownGameboard;
     this.enemyGameboard = enemyGameboard;
@@ -91,7 +92,6 @@ export class Player {
 }
 
 class Human {}
-class AI {}
 
 console.log(1);
 console.log(1);
