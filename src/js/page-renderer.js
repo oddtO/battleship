@@ -15,9 +15,10 @@ export class Renderer {
     for (let y = 0; y < player.ownGameboard.tiles.length; ++y) {
       const row = document.createElement("div");
       for (let x = 0; x < player.ownGameboard.tiles[0].length; ++x) {
-        row.append(document.createElement("div"));
-        row.dataset.y = y;
-        row.dataset.x = x;
+        const tile = document.createElement("div");
+        tile.dataset.y = y;
+        tile.dataset.x = x;
+        row.append(tile);
       }
       gameboardHTML.append(row);
     }
