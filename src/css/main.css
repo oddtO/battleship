@@ -1,0 +1,32 @@
+main > :is(.player1, .player2) {
+  display: flex;
+  flex-direction: column;
+  background-color: #adadad;
+  width: auto;
+  height: auto;
+  margin: 0 30px;
+}
+
+main .row {
+  width: 100%;
+
+  --tile-size: calc(1em + 2vw);
+
+  height: var(--tile-size);
+}
+
+main .row > * {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  display: inline-block;
+  border-left: 1px solid #000;
+  border-top: 1px solid #000;
+}
+
+main .row:last-child > * {
+  border-bottom: 1px solid #000;
+}
+
+main .row > *:last-child {
+  border-right: 1px solid #000;
+}

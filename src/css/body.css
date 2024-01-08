@@ -11,4 +11,8 @@ body > header {
 
 body > main {
   flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 }

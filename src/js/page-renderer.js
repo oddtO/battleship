@@ -14,6 +14,7 @@ export class Renderer {
   #createTiles(player, gameboardHTML) {
     for (let y = 0; y < player.ownGameboard.tiles.length; ++y) {
       const row = document.createElement("div");
+      row.className = "row";
       for (let x = 0; x < player.ownGameboard.tiles[0].length; ++x) {
         const tile = document.createElement("div");
         tile.dataset.y = y;

@@ -2,6 +2,7 @@ import "../css/reset.css";
 import "../css/style.css";
 import "../css/header.css";
 import "../css/body.css";
+import "../css/main.css";
 import { Player } from "./player.js";
 import { Renderer } from "./page-renderer.js";
 import { Gameboard } from "./gameboard.js";
