@@ -1,7 +1,8 @@
 main > :is(.player1, .player2) {
   display: flex;
   flex-direction: column;
-  background-color: #adadad;
+
+  /* background-color: #adadad; */
   width: auto;
   height: auto;
   margin: 0 30px;
@@ -10,7 +11,7 @@ main > :is(.player1, .player2) {
 main .row {
   width: 100%;
 
-  --tile-size: calc(1em + 2vw);
+  --tile-size: calc(15px + 2vw);
 
   height: var(--tile-size);
 }
@@ -18,7 +19,8 @@ main .row {
 main .row > * {
   width: var(--tile-size);
   height: var(--tile-size);
-  display: inline-block;
+  background-color: #00dcd2;
+  display: inline-flex;
   border-left: 1px solid #000;
   border-top: 1px solid #000;
 }
@@ -29,4 +31,21 @@ main .row:last-child > * {
 
 main .row > *:last-child {
   border-right: 1px solid #000;
+}
+
+main .row.letters {
+  display: flex;
+}
+
+main .row.letters > *,
+main .row > .number {
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: none;
+}
+
+main .row > .number {
+  /* font-size: 10px; */
+  vertical-align: top;
 }
