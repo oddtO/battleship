@@ -29,6 +29,11 @@ main .row:last-child > * {
   border-bottom: 1px solid #000;
 }
 
+main .row:not(.letters) > *:not(.number):hover {
+  cursor: pointer;
+  background-color: #14faf0;
+}
+
 main .row > *:last-child {
   border-right: 1px solid #000;
 }
