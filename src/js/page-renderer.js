@@ -2,16 +2,18 @@ export class Renderer {
   constructor(player1, player2) {
     this.player1 = player1;
     this.player2 = player2;
-    this.gameboardHTML1 = document.querySelector(".player1");
-    this.gameboardHTML2 = document.querySelector(".player2");
+    const htmlGameboardSymbol = Symbol("html-gameboard");
+    this.htmlGameboardSymbol = htmlGameboardSymbol;
+    this.player1[this.htmlGameboardSymbol] = document.querySelector(".player1");
+    this.player2[this.htmlGameboardSymbol] = document.querySelector(".player2");
   }
 
   init() {
     console.log("init");
-    this.#createTiles(this.player1, this.gameboardHTML1);
-    this.#createTiles(this.player2, this.gameboardHTML2);
+    this.#createTiles(this.player1);
+    this.#createTiles(this.player2);
   }
-  #createTiles(player, gameboardHTML) {
+  #createTiles(player) {
     for (let y = 0; y < player.ownGameboard.tiles.length; ++y) {
       const row = document.createElement("div");
       const numTile = document.createElement("div");
@@ -28,7 +30,7 @@ export class Renderer {
         tile.classList.add("hit");
         row.append(tile);
       }
-      gameboardHTML.append(row);
+      player[this.htmlGameboardSymbol].append(row);
     }
   }
 }
