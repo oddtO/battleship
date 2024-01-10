@@ -31,7 +31,9 @@ main .row:last-child > * {
 
 main .row:not(.letters) > *:not(.number):hover {
   cursor: pointer;
-  background-color: #14faf0;
+
+  /* background-color: #14faf0; */
+  filter: brightness(150%);
 }
 
 main .row > *:last-child {

@@ -10,8 +10,11 @@ import { Gameboard } from "./gameboard.js";
 
 const gameboard1 = new Gameboard(10);
 const gameboard2 = new Gameboard(10);
-const player1 = new Player(gameboard1, gameboard2, false);
-const player2 = new Player(gameboard2, gameboard1, false);
+const player1 = new Player(gameboard1, gameboard2, true);
+const player2 = new Player(gameboard2, gameboard1, true);
 
 const renderer = new Renderer(player1, player2);
 renderer.init();
+
+player1.generateShips();
+renderer.render();

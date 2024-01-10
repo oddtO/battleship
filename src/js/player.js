@@ -14,9 +14,9 @@ export class Player {
   }
 
   generateShips() {
-    this.placeShipRandomly(new Ship(4));
+    this.#placeShipRandomly(new Ship(4));
   }
-  placeShipRandomly(ship) {
+  #placeShipRandomly(ship) {
     const directions = ["horizontal", "vertical"];
 
     const shipDirection = directions[RandomNum(0, directions.length)];

@@ -2,7 +2,7 @@ main .row > .hit {
   pointer-events: none;
 }
 
-main .row > .ship.present {
+main .row > .ship {
   background-color: #aa7800;
 }
 
