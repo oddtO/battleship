@@ -1,0 +1,41 @@
+main .row > .ship {
+  pointer-events: none;
+}
+
+main .row > .ship.present {
+  background-color: #aa7800;
+}
+
+main .row > .ship.hit {
+  background-color: #a00;
+}
+
+main .row > .hit {
+  vertical-align: top;
+  position: relative;
+}
+
+main .row > .hit::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  content: "";
+  border-radius: 20px;
+  width: 50%;
+  height: 50%;
+}
+
+main .row > :not(.ship).hit::before {
+  background-color: #0000e6;
+}
+
+main .row > .ship.hit {
+  background-image: url("../img/svg/Explosion-155624_icon.svg");
+  background-size: contain;
+
+  /* background-position: center; */
+
+  /* inset: 0; */
+}

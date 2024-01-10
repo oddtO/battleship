@@ -24,6 +24,8 @@ export class Renderer {
         const tile = document.createElement("div");
         tile.dataset.y = y;
         tile.dataset.x = x;
+        tile.classList.add("ship");
+        tile.classList.add("hit");
         row.append(tile);
       }
       gameboardHTML.append(row);
