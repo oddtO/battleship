@@ -1,5 +1,6 @@
 import { Ship } from "./ship";
 import { AI } from "./ai";
+import { Human } from "./human";
 import { RandomNum } from "./random";
 
 export class Player {
@@ -7,6 +8,8 @@ export class Player {
     if (isAI) {
       this.getAttackOpportunities = AI.prototype.getAttackOpportunities;
       this.makeMove = AI.prototype.attackRandomly;
+    } else {
+      this.makeMove = Human.prototype.makeMove;
     }
 
     this.ownGameboard = ownGameboard;
@@ -93,5 +96,3 @@ export class Player {
     return true;
   }
 }
-
-class Human {}
