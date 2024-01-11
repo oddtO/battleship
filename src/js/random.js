@@ -1,3 +1,4 @@
 export function RandomNum(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
+  const excludingMax = max - 1;
+  return Math.round(Math.random() * (excludingMax - min) + min);
 }

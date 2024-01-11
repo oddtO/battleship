@@ -28,9 +28,9 @@ export class Player {
       ship,
       shipDirection,
     );
-
-    const [y, x] =
-      placementOpportunities[RandomNum(0, placementOpportunities.length)];
+    const randNam = RandomNum(0, placementOpportunities.length);
+    console.log("rand: ", randNam, "input: ", placementOpportunities.length);
+    const [y, x] = placementOpportunities[randNam];
     this.ownGameboard.placeShip(ship, y, x, shipDirection);
   }
   getShipPlacementOpportunities(ship, direction = "horizontal") {
