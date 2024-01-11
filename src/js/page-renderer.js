@@ -109,4 +109,13 @@ export class Renderer {
       );
     });
   }
+
+  sendInput(player, y, x) {
+    const enemyPlayer = player[this.enemyPlayerSymbol];
+
+    const tileToClick = enemyPlayer[this.htmlGameboardSymbol].querySelector(
+      `[data-y="${y}"][data-x="${x}"]`,
+    );
+    tileToClick.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  }
 }

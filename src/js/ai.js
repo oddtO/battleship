@@ -12,11 +12,16 @@ export class AI {
     return coordsPossibleForAttack;
   }
 
-  attackRandomly() {
+  getRandomCoords() {
+    const opportunities = this.getAttackOpportunities();
+    const coords = opportunities[RandomNum(0, opportunities.length)];
+    return coords;
+  }
+  /* attackRandomly() {
     const opportunities = this.getAttackOpportunities();
     const [yAttack, xAttack] =
       opportunities[RandomNum(0, opportunities.length)];
 
     this.enemyGameboard.receiveAttack(yAttack, xAttack);
-  }
+  } */
 }

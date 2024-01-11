@@ -6,7 +6,7 @@ import "../css/main.css";
 import "../css/tile.css";
 import { Game } from "./game.js";
 
-const game = new Game(false, false);
+const game = new Game(false, true);
 
 for await (const player of game) {
   game.renderer.renderPlayer(player);

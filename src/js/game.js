@@ -17,8 +17,12 @@ export class Game {
   }
 
   async getInput(player) {
-    const [y, x] = await this.renderer.askInput(player);
-    console.log(y, x);
+    const coordsPromise = this.renderer.askInput(player);
+    if (player.isAI) {
+      console.log("ai");
+      this.renderer.sendInput(player, ...player.getRandomCoords());
+    }
+    const [y, x] = await coordsPromise;
     player.enemyGameboard.receiveAttack(y, x);
   }
 

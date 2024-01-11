@@ -7,11 +7,9 @@ export class Player {
   constructor(ownGameboard, enemyGameboard, isAI = false) {
     if (isAI) {
       this.getAttackOpportunities = AI.prototype.getAttackOpportunities;
-      this.makeMove = AI.prototype.attackRandomly;
-    } else {
-      this.makeMove = Human.prototype.makeMove;
+      this.getRandomCoords = AI.prototype.getRandomCoords;
     }
-
+    this.isAI = isAI;
     this.ownGameboard = ownGameboard;
     this.enemyGameboard = enemyGameboard;
   }
