@@ -4,6 +4,8 @@ import "../css/header.css";
 import "../css/body.css";
 import "../css/main.css";
 import "../css/tile.css";
+import "../css/popup.css";
+import "../css/pass-device.css";
 import { Game } from "./game.js";
 
 const game = new Game(false, true);

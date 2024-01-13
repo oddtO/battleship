@@ -1,0 +1,36 @@
+.popup-list.pass-device {
+  background-color: black;
+}
+
+.popup-list .popup {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  height: 50%;
+}
+
+.popup strong {
+  flex: 0;
+  flex-basis: 70%;
+}
+
+.popup > .strong-wrapper,
+.popup .button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.popup [class^="out"] {
+  color: #05ebbe;
+  font-weight: bold;
+}
+
+.popup button {
+  margin-bottom: 20px;
+}
+
+.popup > * {
+  flex: 1;
+}
