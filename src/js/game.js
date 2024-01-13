@@ -4,16 +4,7 @@ import { Gameboard } from "./gameboard.js";
 
 export class Game {
   constructor(isAI1, isAI2) {
-    const gameboard1 = new Gameboard(10);
-    const gameboard2 = new Gameboard(10);
-    this.player1 = new Player(gameboard1, gameboard2, isAI1);
-    this.player2 = new Player(gameboard2, gameboard1, isAI2);
-
-    this.renderer = new Renderer(this.player1, this.player2);
-    this.renderer.init();
-
-    this.player1.generateShips();
-    this.player2.generateShips();
+    this.resetGame(isAI1, isAI2);
   }
 
   async getInput(player) {
@@ -26,6 +17,18 @@ export class Game {
     player.enemyGameboard.receiveAttack(y, x);
   }
 
+  resetGame(isAI1, isAI2) {
+    const gameboard1 = new Gameboard(10);
+    const gameboard2 = new Gameboard(10);
+    this.player1 = new Player(gameboard1, gameboard2, isAI1);
+    this.player2 = new Player(gameboard2, gameboard1, isAI2);
+
+    this.renderer = new Renderer(this.player1, this.player2);
+    this.renderer.init();
+
+    this.player1.generateShips();
+    this.player2.generateShips();
+  }
   *[Symbol.asyncIterator]() {
     let callCount = 0;
     while (true) {
