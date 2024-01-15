@@ -2,7 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    commonjs: true,
+    // commonjs: true,
   },
   // "\(@[^"/]*\)"
   // eslint-\(plugin\|config\)-\w\+

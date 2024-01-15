@@ -32,6 +32,8 @@
 }
 
 .button-popup {
+  width: 3em;
+  height: 1.5em;
   background-color: #000068;
   font-weight: bold;
 }
