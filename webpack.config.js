@@ -13,7 +13,7 @@ module.exports = (env, argv) => {
     output: {
       filename: "index.js",
       path: path.resolve(__dirname, "dist"),
-      publicPath: isProduction ? "./" : "auto",
+      // publicPath: isProduction ? "./" : "auto",
       clean: isProduction,
       environment: {
         arrowFunction: false,
@@ -24,15 +24,19 @@ module.exports = (env, argv) => {
     devtool: isProduction ? undefined : "inline-source-map",
     devServer: {
       static: "./dist",
-      watchFiles: [
-        "src/**/*",
-        "public/**/*",
-        "webpack.config.js",
-        "babel.config.js",
-      ],
+
+      watchFiles: ["dist/**/"],
+      // watchFiles: [
+      //   "src/**/*",
+      //   "public/**/*",
+      //   "webpack.config.js",
+      //   "babel.config.js",
+      // ],
+      liveReload: true,
+      hot: false,
     },
     plugins: [
-      new HtmlWebpackPlugin({ template: "./src/index.html" }),
+      new HtmlWebpackPlugin({ template: "./src/html/index.html" }),
       new MiniCssExtractPlugin(),
     ],
     module: {

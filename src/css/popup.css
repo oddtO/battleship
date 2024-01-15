@@ -20,7 +20,7 @@
 }
 
 .popup-list.pass-device .pass-device,
-.popup-list.reset-game .reset-game {
+.popup-list.custom-game .custom-game {
   display: flex;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .button-popup {
-  width: 3em;
+  padding: 0 10px;
   height: 1.5em;
   background-color: #000068;
   font-weight: bold;

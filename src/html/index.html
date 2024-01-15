@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Battleship</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <header>
+            <h1>Battleship</h1>
+
+            <div class="output">It's one's turn!</div>
+        </header>
+
+        <main>
+            <div class="player1"></div>
+            <div class="player2"></div>
+            <ul class="popup-list shown custom-game">
+                <li class="pass-device">
+                    <div class="popup">
+                        <div class="strong-wrapper">
+                            <strong>
+                                <span class="text">pass device to</span>
+                                <span class="out1">Player1</span>
+                            </strong>
+                        </div>
+                        <div class="button-wrapper">
+                            <button class="button-popup">OK</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="custom-game">
+                    <div class="popup">
+                        <form>
+                            <div>
+                                <label for="">Player1 Name:</label>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <label for="">Player2 Name:</label>
+                                <input type="text">
+                            </div>
+                            <fieldset>
+                                <legend>Is Player 1</legend>
+                                <div>
+                                    <input type="radio" name="isAIp1" id="is-human-p1">
+                                    <label for="is-human-p1">Human</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="isAIp1" id="is-ai-p1">
+
+                                    <label for="is-ai-p1">Ai </label>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Is Player 2</legend>
+                                <div>
+                                    <input type="radio" name="isAIp2" id="is-human-p2">
+                                    <label for="is-human-p2">Human</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="isAIp2" id="is-ai-p2">
+                                    <label for="is-ai-p2">Ai</label>
+                                </div>
+                            </fieldset>
+                            <input type="submit" value="Start Game" class="button-popup">
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </main>
+    </body>
+</html>
