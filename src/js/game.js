@@ -1,5 +1,5 @@
 import { Player } from "./player.js";
-import { Renderer } from "./page-renderer.js";
+import { DOMHandler } from "./page-renderer.js";
 import { Gameboard } from "./gameboard.js";
 
 export class Game {
@@ -8,10 +8,10 @@ export class Game {
   }
 
   async getInput(player) {
-    const coordsPromise = this.renderer.askInput(player);
+    const coordsPromise = this.domHandler.askInput(player);
     if (player.isAI) {
       console.log("ai");
-      this.renderer.sendInput(player, ...player.getRandomCoords());
+      this.domHandler.sendInput(player, ...player.getRandomCoords());
     }
     const [y, x] = await coordsPromise;
     player.enemyGameboard.receiveAttack(y, x);
@@ -23,8 +23,8 @@ export class Game {
     this.player1 = new Player(gameboard1, gameboard2, isAI1);
     this.player2 = new Player(gameboard2, gameboard1, isAI2);
 
-    this.renderer = new Renderer(this.player1, this.player2);
-    this.renderer.init();
+    this.domHandler = new DOMHandler(this.player1, this.player2);
+    this.domHandler.init();
 
     this.player1.generateShips();
     this.player2.generateShips();
