@@ -1,5 +1,7 @@
 main .row > .hit {
   pointer-events: none;
+  vertical-align: top;
+  position: relative;
 }
 
 main .row > .ship {
@@ -8,11 +10,8 @@ main .row > .ship {
 
 main .row > .ship.hit {
   background-color: #a00;
-}
-
-main .row > .hit {
-  vertical-align: top;
-  position: relative;
+  background-image: url("../img/svg/Explosion-155624_icon.svg");
+  background-size: contain;
 }
 
 main .row > .hit::before {
@@ -29,13 +28,4 @@ main .row > .hit::before {
 
 main .row > :not(.ship).hit::before {
   background-color: #0000e6;
-}
-
-main .row > .ship.hit {
-  background-image: url("../img/svg/Explosion-155624_icon.svg");
-  background-size: contain;
-
-  /* background-position: center; */
-
-  /* inset: 0; */
 }

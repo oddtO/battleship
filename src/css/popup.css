@@ -22,6 +22,8 @@
 .popup-list.pass-device .pass-device,
 .popup-list.custom-game .custom-game {
   display: flex;
+
+  --dark-blue: #000068;
 }
 
 .popup {
@@ -34,7 +36,7 @@
 .button-popup {
   padding: 0 10px;
   height: 1.5em;
-  background-color: #000068;
+  background-color: var(--dark-blue);
   font-weight: bold;
 }
 

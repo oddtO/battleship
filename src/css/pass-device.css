@@ -5,6 +5,7 @@
 .popup-list .popup {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   width: 50%;
   height: 50%;
@@ -31,6 +32,6 @@
   margin-bottom: 20px;
 }
 
-.popup > * {
+.popup-list.shown.pass-device .popup > * {
   flex: 1;
 }
