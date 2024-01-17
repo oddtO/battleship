@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
     mode: argv.mode,
     devtool: isProduction ? undefined : "inline-source-map",
     devServer: {
-      static: "./dist",
+      // static: "./dist",
 
       watchFiles: ["dist/**/"],
       // watchFiles: [

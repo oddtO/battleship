@@ -14,6 +14,6 @@ import { Game } from "./game.js";
 const game = new Game(false, true);
 
 for await (const player of game) {
-  game.domHandler.renderPlayer(player);
+  // game.domHandler.renderPlayer(player);
   await game.getInput(player);
 }

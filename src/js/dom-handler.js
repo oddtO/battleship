@@ -3,8 +3,15 @@ export class DOMHandler {
     this.player1 = player1;
     this.player2 = player2;
     this.htmlGameboardSymbol = Symbol("html-gameboard");
-    this.htmlTileSymbol = Symbol("html-tile");
     this.enemyPlayerSymbol = Symbol("enemy-player");
+    this.resetBtn = document.querySelector("button.reset");
+    this.resetBtn.addEventListener("click", DOMHandler.#sendResetEvent);
+    this.popupList = document.querySelector(".popup-list");
+    this.customGameBtn = document.querySelector("button.custom-game");
+    this.customGameBtn.addEventListener(
+      "click",
+      this.#showCustomGameMenu.bind(this),
+    );
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
     this.player2[this.enemyPlayerSymbol] = this.player1;
@@ -17,7 +24,17 @@ export class DOMHandler {
     this.#createTiles(this.player1);
     this.#createTiles(this.player2);
   }
+  #showCustomGameMenu() {
+    console.log(this.popupList);
+    this.popupList.classList.toggle("shown");
+    this.popupList.classList.toggle("custom-game");
+  }
+  static #sendResetEvent() {
+    const resetEvent = new CustomEvent("game-reset");
+    document.body.dispatchEvent(resetEvent);
+  }
   #createTiles(player) {
+    player[this.htmlGameboardSymbol].innerHTML = "";
     player[this.htmlGameboardSymbol].append(
       createLetters(player.ownGameboard.tiles.length),
     );
@@ -34,7 +51,7 @@ export class DOMHandler {
         tile.dataset.y = y;
         tile.dataset.x = x;
         tile.classList.add("tile");
-        player.ownGameboard.getTileAt(y, x)[this.htmlTileSymbol] = tile;
+        // player.ownGameboard.getTileAt(y, x)[this.htmlTileSymbol] = tile;
         row.append(tile);
       }
       player[this.htmlGameboardSymbol].append(row);
@@ -63,21 +80,22 @@ export class DOMHandler {
     }
   }
 
-  renderPlayer(player) {
-    console.log(player.ownGameboard.tiles);
-    console.log(player.enemyGameboard.tiles);
-    for (let y = 0; y < player.ownGameboard.tiles.length; ++y) {
-      for (let x = 0; x < player.ownGameboard.tiles[0].length; ++x) {
-        const tile = player.ownGameboard.getTileAt(y, x);
-        const tileHTML = tile[this.htmlTileSymbol];
-
+  renderPlayer(activePlayer, waitingPlayer) {
+    const activePlayerGameboardHTML = activePlayer[this.htmlGameboardSymbol];
+    const waitingPlayerGameboardHTML = waitingPlayer[this.htmlGameboardSymbol];
+    for (let y = 0; y < activePlayer.ownGameboard.tiles.length; ++y) {
+      for (let x = 0; x < activePlayer.ownGameboard.tiles[0].length; ++x) {
+        const tile = activePlayer.ownGameboard.getTileAt(y, x);
+        const tileHTML =
+          activePlayerGameboardHTML.children[y + 1].children[x + 1];
         if (tile.ship) tileHTML.classList.add("ship");
         if (tile.isHit) {
           tileHTML.classList.add("hit");
         }
 
-        const enemyTile = player.enemyGameboard.getTileAt(y, x);
-        const enemyTileHTML = enemyTile[this.htmlTileSymbol];
+        const enemyTile = activePlayer.enemyGameboard.getTileAt(y, x);
+        const enemyTileHTML =
+          waitingPlayerGameboardHTML.children[y + 1].children[x + 1];
 
         if (enemyTile.isHit) {
           enemyTileHTML.classList.add("hit");
