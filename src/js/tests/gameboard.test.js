@@ -1,7 +1,7 @@
 import { Ship } from "../ship";
 import { Gameboard } from "../gameboard";
 
-describe("gameboard class ship placement", () => {
+describe("gameboard", () => {
   const x = 3;
   const y = 3;
   const x2 = 3;
@@ -9,10 +9,11 @@ describe("gameboard class ship placement", () => {
   const shipLength = 4;
   const ship = new Ship(shipLength);
   const ship2 = new Ship(shipLength);
-  const gameboard = new Gameboard();
+
+  const gameboard = new Gameboard(10);
+
   gameboard.placeShip(ship, y, x, "horizontal");
   gameboard.placeShip(ship2, y2, x2, "vertical");
-
   test("ship can be placed vertically or horizontally and seen specific coords", () => {
     for (let i = 0; i < shipLength; ++i) {
       expect(gameboard.getTileAt(y, x + i).ship).toBe(ship);
