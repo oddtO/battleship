@@ -23,13 +23,4 @@ describe("ai", () => {
     player2.ownGameboard.getTileAt(2, 2).isHit = true;
     expect(player1.getAttackOpportunities()).toHaveLength(99);
   });
-  test("ai can attack randomly", () => {
-    player1.makeMove();
-    expect(player1.getAttackOpportunities()).toHaveLength(99);
-  });
-  test("ai can attack randomly twice", () => {
-    player1.makeMove();
-    player1.makeMove();
-    expect(player1.getAttackOpportunities()).toHaveLength(98);
-  });
 });

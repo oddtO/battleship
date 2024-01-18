@@ -27,7 +27,12 @@ test("when ship is destroyed, all its neighboring tiles count as being hit", () 
   ];
 
   expect(gameboard.ships[0].isSunk()).toBeTruthy();
-  for (const [yOffset, xOffset] of offsets) {
-    expect(gameboard.getTileAt(y + yOffset, x + xOffset).isHit).toBeTruthy();
+  for (let i = 0; i < shipLength; ++i) {
+    for (const [yOffset, xOffset] of offsets) {
+      expect(
+        gameboard.getTileAt(y + yOffset, x + i + xOffset).isHit,
+      ).toBeTruthy();
+    }
   }
+  console.log(gameboard);
 });
