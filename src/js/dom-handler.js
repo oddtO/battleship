@@ -40,7 +40,7 @@ export class DOMHandler {
     this.#createTiles(this.player2);
   }
 
-  #showPassDeviceScreen(nextPlayerName) {
+  showPassDeviceScreen(nextPlayerName) {
     this.popupList.classList.add("shown");
     this.popupList.classList.add("pass-device");
     this.nextPlayerNameElem.textContent = nextPlayerName;
@@ -136,7 +136,9 @@ export class DOMHandler {
     const activePlayerGameboardHTML = activePlayer[this.htmlGameboardSymbol];
     const waitingPlayerGameboardHTML = waitingPlayer[this.htmlGameboardSymbol];
 
-    this.#showPassDeviceScreen(activePlayer.name);
+    if (!(activePlayer.isAI || waitingPlayer.isAI))
+      this.showPassDeviceScreen(activePlayer.name);
+
     for (let y = 0; y < activePlayer.ownGameboard.tiles.length; ++y) {
       for (let x = 0; x < activePlayer.ownGameboard.tiles[0].length; ++x) {
         const tile = activePlayer.ownGameboard.getTileAt(y, x);
