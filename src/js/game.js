@@ -3,28 +3,46 @@ import { DOMHandler } from "./dom-handler";
 import { Gameboard } from "./gameboard.js";
 
 export class Game {
-  constructor(isAI1, isAI2) {
+  constructor(isAI1, isAI2, player1Name = "player1", player2Name = "player2") {
+    this.startGame(isAI1, isAI2, player1Name, player2Name);
+  }
+
+  startGame(isAI1, isAI2, player1Name, player2Name) {
     const gameboard1 = new Gameboard(10);
     const gameboard2 = new Gameboard(10);
-    this.player1 = new Player(gameboard1, gameboard2, isAI1);
-    this.player2 = new Player(gameboard2, gameboard1, isAI2);
+
+    this.player1 = new Player(gameboard1, gameboard2, isAI1, player1Name);
+    this.player2 = new Player(gameboard2, gameboard1, isAI2, player2Name);
 
     this.resetGameboards();
     this.addEventListeners();
   }
-
   async getInput(player) {
     const coordsPromise = this.domHandler.askInput(player);
     if (player.isAI) {
       console.log("ai");
       this.domHandler.sendInput(player, ...player.getRandomCoords());
     }
-    const [y, x] = await coordsPromise;
+    let y, x;
+    try {
+      [y, x] = await coordsPromise;
+    } catch {
+      this.callCount = 0;
+      return;
+    }
     player.enemyGameboard.receiveAttack(y, x);
   }
 
   addEventListeners() {
     document.body.addEventListener("game-reset", () => this.resetGameboards());
+    document.body.addEventListener("custom-game", (event) => {
+      this.startGame(
+        event.detail.isAI1,
+        event.detail.isAI2,
+        event.detail.name1,
+        event.detail.name2,
+      );
+    });
   }
   resetGameboards() {
     const gameboard1 = new Gameboard(10);

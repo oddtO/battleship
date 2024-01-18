@@ -41,20 +41,32 @@
                         <form>
                             <div>
                                 <label for="">Player1 Name:</label>
-                                <input type="text">
+                                <input type="text" name="name1" id="name1" required>
                             </div>
                             <div>
                                 <label for="">Player2 Name:</label>
-                                <input type="text">
+                                <input type="text" name="name1" id="name2" required>
                             </div>
                             <fieldset>
                                 <legend>Is Player 1</legend>
                                 <div>
-                                    <input type="radio" name="isAIp1" id="is-human-p1">
+                                    <input
+                                        type="radio"
+                                        name="isAIp1"
+                                        id="is-human-p1"
+                                        value="false"
+                                        required
+                                    >
                                     <label for="is-human-p1">Human</label>
                                 </div>
                                 <div>
-                                    <input type="radio" name="isAIp1" id="is-ai-p1">
+                                    <input
+                                        type="radio"
+                                        name="isAIp1"
+                                        id="is-ai-p1"
+                                        value="true"
+                                        required
+                                    >
 
                                     <label for="is-ai-p1">Ai </label>
                                 </div>
@@ -62,17 +74,33 @@
                             <fieldset>
                                 <legend>Is Player 2</legend>
                                 <div>
-                                    <input type="radio" name="isAIp2" id="is-human-p2">
+                                    <input
+                                        type="radio"
+                                        name="isAIp2"
+                                        id="is-human-p2"
+                                        value="false"
+                                        required
+                                    >
                                     <label for="is-human-p2">Human</label>
                                 </div>
                                 <div>
-                                    <input type="radio" name="isAIp2" id="is-ai-p2">
+                                    <input
+                                        type="radio"
+                                        name="isAIp2"
+                                        id="is-ai-p2"
+                                        value="true"
+                                        required
+                                    >
                                     <label for="is-ai-p2">Ai</label>
                                 </div>
                             </fieldset>
                             <div class="buttons">
                                 <input type="submit" value="Start Game" class="button-popup">
-                                <input type="button" value="Cancel" class="button-popup">
+                                <input
+                                    type="button"
+                                    value="Cancel"
+                                    class="button-popup cancel"
+                                >
                             </div>
                         </form>
                     </div>

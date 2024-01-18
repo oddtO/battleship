@@ -5,13 +5,22 @@ export class DOMHandler {
     this.htmlGameboardSymbol = Symbol("html-gameboard");
     this.enemyPlayerSymbol = Symbol("enemy-player");
     this.resetBtn = document.querySelector("button.reset");
-    this.resetBtn.addEventListener("click", DOMHandler.#sendResetEvent);
+    this.resetBtn.onclick = DOMHandler.#sendResetEvent;
     this.popupList = document.querySelector(".popup-list");
     this.customGameBtn = document.querySelector("button.custom-game");
-    this.customGameBtn.addEventListener(
-      "click",
-      this.#showCustomGameMenu.bind(this),
+    this.customGameBtn.onclick = this.#toggleCustomGameMenu.bind(this);
+
+    this.calcelCustomGameMenuBtn = document.querySelector(
+      "input[type='button'].cancel",
     );
+    this.customGameFormBtn = document.querySelector(".popup > form");
+    this.calcelCustomGameMenuBtn.onclick =
+      this.#toggleCustomGameMenu.bind(this);
+    this.customGameFormBtn.onsubmit = this.#initCustomGame.bind(this);
+    this.name1Elem = document.querySelector("#name1");
+    this.name2Elem = document.querySelector("#name2");
+    this.isAI1Elem = document.querySelector("[name='isAIp1']:checked");
+    this.isAI2Elem = document.querySelector("[name='isAIp2']:checked");
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
     this.player2[this.enemyPlayerSymbol] = this.player1;
@@ -24,8 +33,29 @@ export class DOMHandler {
     this.#createTiles(this.player1);
     this.#createTiles(this.player2);
   }
-  #showCustomGameMenu() {
-    console.log(this.popupList);
+
+  #initCustomGame(event) {
+    event.preventDefault();
+    const name1 = this.name1Elem.value;
+    const name2 = this.name2Elem.value;
+    const isAI1 =
+      document.querySelector("[name='isAIp1']:checked")?.value === "true"
+        ? true
+        : false;
+    const isAI2 =
+      document.querySelector("[name='isAIp2']:checked")?.value === "true"
+        ? true
+        : false;
+
+    document.body.dispatchEvent(
+      new CustomEvent("custom-game", {
+        detail: { name1, name2, isAI1, isAI2 },
+      }),
+    );
+    this.#toggleCustomGameMenu();
+    this.rejectPrevGame();
+  }
+  #toggleCustomGameMenu() {
     this.popupList.classList.toggle("shown");
     this.popupList.classList.toggle("custom-game");
   }
@@ -109,7 +139,8 @@ export class DOMHandler {
   }
   askInput(player) {
     const enemyPlayer = player[this.enemyPlayerSymbol];
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+      this.rejectPrevGame = reject;
       const resolveInput = (event) => {
         const target = event.target;
         if (target.matches(".tile")) {
