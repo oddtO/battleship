@@ -22,6 +22,7 @@ export class Game {
     if (player.isAI) {
       console.log("ai");
       this.domHandler.sendInput(player, ...player.getRandomCoords());
+      setTimeout(this.domHandler.hidePassDeviceScreen.bind(this.domHandler));
     }
     let y, x;
     try {
@@ -57,6 +58,8 @@ export class Game {
     this.domHandler.init();
 
     this.domHandler.renderPlayer(this.player1, this.player2);
+    if (!this.player1.isAI && this.player2.isAI)
+      setTimeout(this.domHandler.hidePassDeviceScreen.bind(this.domHandler));
     this.callCount = 1;
   }
   *[Symbol.asyncIterator]() {

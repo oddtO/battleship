@@ -4,7 +4,7 @@ import { Human } from "./human";
 import { RandomNum } from "./random";
 
 export class Player {
-  constructor(ownGameboard, enemyGameboard, isAI = false, name) {
+  constructor(ownGameboard, enemyGameboard, isAI = false, name = "unknown") {
     if (isAI) {
       this.getAttackOpportunities = AI.prototype.getAttackOpportunities;
       this.getRandomCoords = AI.prototype.getRandomCoords;

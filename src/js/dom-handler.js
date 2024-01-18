@@ -8,19 +8,25 @@ export class DOMHandler {
     this.resetBtn.onclick = DOMHandler.#sendResetEvent;
     this.popupList = document.querySelector(".popup-list");
     this.customGameBtn = document.querySelector("button.custom-game");
-    this.customGameBtn.onclick = this.#toggleCustomGameMenu.bind(this);
+    this.customGameBtn.onclick = this.#showCustomGameMenu.bind(this);
 
     this.calcelCustomGameMenuBtn = document.querySelector(
       "input[type='button'].cancel",
     );
     this.customGameFormBtn = document.querySelector(".popup > form");
-    this.calcelCustomGameMenuBtn.onclick =
-      this.#toggleCustomGameMenu.bind(this);
+    this.calcelCustomGameMenuBtn.onclick = this.#hideCustomGameMenu.bind(this);
     this.customGameFormBtn.onsubmit = this.#initCustomGame.bind(this);
     this.name1Elem = document.querySelector("#name1");
     this.name2Elem = document.querySelector("#name2");
     this.isAI1Elem = document.querySelector("[name='isAIp1']:checked");
     this.isAI2Elem = document.querySelector("[name='isAIp2']:checked");
+    this.nextPlayerNameElem = document.querySelector(".pass-device .out1");
+    this.passDeviceOkBtn = document.querySelector(".pass-device .button-popup");
+
+    this.passDeviceOkBtn.addEventListener(
+      "click",
+      this.hidePassDeviceScreen.bind(this),
+    );
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
     this.player2[this.enemyPlayerSymbol] = this.player1;
@@ -34,6 +40,16 @@ export class DOMHandler {
     this.#createTiles(this.player2);
   }
 
+  #showPassDeviceScreen(nextPlayerName) {
+    this.popupList.classList.add("shown");
+    this.popupList.classList.add("pass-device");
+    this.nextPlayerNameElem.textContent = nextPlayerName;
+  }
+
+  hidePassDeviceScreen() {
+    this.popupList.classList.remove("shown");
+    this.popupList.classList.remove("pass-device");
+  }
   #initCustomGame(event) {
     event.preventDefault();
     const name1 = this.name1Elem.value;
@@ -52,12 +68,18 @@ export class DOMHandler {
         detail: { name1, name2, isAI1, isAI2 },
       }),
     );
-    this.#toggleCustomGameMenu();
+    this.#hideCustomGameMenu();
     this.rejectPrevGame();
   }
-  #toggleCustomGameMenu() {
-    this.popupList.classList.toggle("shown");
-    this.popupList.classList.toggle("custom-game");
+  #showCustomGameMenu() {
+    this.popupList.classList.add("shown");
+    this.popupList.classList.add("custom-game");
+    this.popupList.classList.remove("pass-device");
+  }
+  #hideCustomGameMenu() {
+    this.popupList.classList.remove("shown");
+    this.popupList.classList.remove("custom-game");
+    // this.popupList.classList.remove("pass-device");
   }
   static #sendResetEvent() {
     const resetEvent = new CustomEvent("game-reset");
@@ -113,6 +135,8 @@ export class DOMHandler {
   renderPlayer(activePlayer, waitingPlayer) {
     const activePlayerGameboardHTML = activePlayer[this.htmlGameboardSymbol];
     const waitingPlayerGameboardHTML = waitingPlayer[this.htmlGameboardSymbol];
+
+    this.#showPassDeviceScreen(activePlayer.name);
     for (let y = 0; y < activePlayer.ownGameboard.tiles.length; ++y) {
       for (let x = 0; x < activePlayer.ownGameboard.tiles[0].length; ++x) {
         const tile = activePlayer.ownGameboard.getTileAt(y, x);
