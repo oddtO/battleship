@@ -174,7 +174,7 @@ export class DOMHandler {
             "click",
             resolveInput,
           );
-          resolve([target.dataset.y, target.dataset.x]);
+          resolve([+target.dataset.y, +target.dataset.x]);
         }
       };
 

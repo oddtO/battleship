@@ -32,6 +32,49 @@ describe("ai", () => {
 
     expect(player2.getAttackOpportunities()).toHaveLength(4);
   });
+  test("(after missed hits) when a damaged enemy ship is visible, the ai tries to hit adjacent tiles", () => {
+    const ship = new Ship(4);
+    gameboard1.placeShip(ship, 3, 3, "horizontal");
+
+    gameboard1.receiveAttack(0, 0);
+    gameboard1.receiveAttack(1, 1);
+    gameboard1.receiveAttack(1, 0);
+    gameboard1.receiveAttack(3, 3);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(4);
+  });
+  test("when a damaged enemy ship is visible, the ai tries to hit adjacent tiles - one ship has been destroyed before case", () => {
+    const ship = new Ship(4);
+    const shipDestroyed = new Ship(1);
+    gameboard1.placeShip(ship, 0, 0, "horizontal");
+    gameboard1.placeShip(shipDestroyed, 8, 8, "horizontal");
+    gameboard1.receiveAttack(8, 8);
+    gameboard1.receiveAttack(0, 0);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(2);
+  });
+  test("when a damaged enemy ship is visible, the ai tries to hit adjacent tiles - ship on edge case", () => {
+    const ship = new Ship(4);
+    gameboard1.placeShip(ship, 0, 0, "horizontal");
+    gameboard1.receiveAttack(0, 0);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(2);
+  });
+  test("when a damaged enemy ship is visible, the ai tries to hit adjacent tiles - ship on edge case 2", () => {
+    const ship = new Ship(4);
+    gameboard1.placeShip(ship, 3, 6, "horizontal");
+    gameboard1.receiveAttack(3, 9);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(3);
+  });
+  test("when a damaged enemy ship is visible, the ai tries to hit adjacent tiles but excluding already hit tiles", () => {
+    const ship = new Ship(4);
+    gameboard1.placeShip(ship, 3, 3, "horizontal");
+    gameboard1.receiveAttack(3, 3);
+    gameboard1.receiveAttack(4, 3);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(3);
+  });
   test("when a damaged enemy ship is hit twice, the ai tries to hit adjacent tiles in a correct axis (horizontal)", () => {
     const ship = new Ship(4);
     gameboard1.placeShip(ship, 3, 3, "horizontal");
@@ -47,5 +90,21 @@ describe("ai", () => {
     gameboard1.receiveAttack(4, 3);
 
     expect(player2.getAttackOpportunities()).toHaveLength(2);
+  });
+  test("when a damaged enemy ship is surrounded with missed hits, aiming is handled without problems", () => {
+    const ship = new Ship(3);
+    gameboard1.placeShip(ship, 2, 0, "horizontal");
+    gameboard1.receiveAttack(1, 0);
+    gameboard1.receiveAttack(1, 1);
+    gameboard1.receiveAttack(1, 2);
+    gameboard1.receiveAttack(1, 3);
+    gameboard1.receiveAttack(2, 3);
+    gameboard1.receiveAttack(3, 3);
+    gameboard1.receiveAttack(3, 2);
+    gameboard1.receiveAttack(3, 1);
+    gameboard1.receiveAttack(2, 1);
+    gameboard1.receiveAttack(2, 0);
+
+    expect(player2.getAttackOpportunities()).toHaveLength(1);
   });
 });

@@ -6,8 +6,8 @@ export class Gameboard {
     this.tiles = [];
     this.ships = [];
     this.tilesEnemySuspect = [];
-    this.isPrevTileShip = false;
     this.shipNeighboringTilesSymbol = Symbol("neighboring-tiles");
+    this.prevHitShips = [];
     for (let y = 0; y < size; ++y) {
       this.tiles.push([]);
       for (let x = 0; x < size; ++x) {
@@ -30,7 +30,7 @@ export class Gameboard {
     const neighborTiles = new Set();
     this.ships.push(ship);
     this.tiles[y][x].ship = ship;
-    let neighbors = this.#detectNeighboringTiles(ship, y, x, offsets);
+    let neighbors = this.detectNeighboringTiles(y, x, offsets);
     // neighborTiles.add(...neighbors);
 
     neighbors.forEach((neighbor) => neighborTiles.add(neighbor));
@@ -38,14 +38,14 @@ export class Gameboard {
       for (let i = 1; i < ship.length; ++i) {
         this.tiles[y][x + i].ship = ship;
 
-        neighbors = this.#detectNeighboringTiles(ship, y, x + i, offsets);
+        neighbors = this.detectNeighboringTiles(y, x + i, offsets);
         // neighborTiles.add(...neighbors);
         neighbors.forEach((neighbor) => neighborTiles.add(neighbor));
       }
     } else {
       for (let i = 1; i < ship.length; ++i) {
         this.tiles[y + i][x].ship = ship;
-        neighbors = this.#detectNeighboringTiles(ship, y + i, x, offsets);
+        neighbors = this.detectNeighboringTiles(y + i, x, offsets);
         // neighborTiles.add(...neighbors);
         neighbors.forEach((neighbor) => neighborTiles.add(neighbor));
       }
@@ -53,10 +53,7 @@ export class Gameboard {
 
     ship[this.shipNeighboringTilesSymbol] = neighborTiles;
   }
-  #detectNeighboringTiles(ship, y, x, offsets) {
-    /* if (ship[this.shipNeighboringTilesSymbol].has(this.tiles[y][x]))
-      ship[this.shipNeighboringTilesSymbol].delete(this.tiles[y][x]); */
-
+  detectNeighboringTiles(y, x, offsets) {
     const neighborTiles = [];
     for (const [yOffset, xOffset] of offsets) {
       if (
@@ -66,10 +63,21 @@ export class Gameboard {
         x + xOffset >= this.tiles[0].length
       )
         continue;
-      /* ship[this.shipNeighboringTilesSymbol].add(
-        this.tiles[y + yOffset][x + xOffset],
-      ); */
       neighborTiles.push(this.tiles[y + yOffset][x + xOffset]);
+    }
+    return neighborTiles;
+  }
+  detectNeighboringLegalCoords(y, x, offsets) {
+    const neighborTiles = [];
+    for (const [yOffset, xOffset] of offsets) {
+      if (
+        y + yOffset < 0 ||
+        x + xOffset < 0 ||
+        y + yOffset >= this.tiles.length ||
+        x + xOffset >= this.tiles[0].length
+      )
+        continue;
+      neighborTiles.push([y + yOffset, x + xOffset]);
     }
     return neighborTiles;
   }
@@ -78,15 +86,6 @@ export class Gameboard {
     return this.tiles[y][x];
   }
   receiveAttack(y, x) {
-    const leftRightOffsets = [
-      [0, 1],
-      [0, -1],
-    ];
-
-    const topBottomOffsets = [
-      [1, 0],
-      [-1, 0],
-    ];
     const hitTile = this.tiles[y][x];
     hitTile.isHit = true;
     if (hitTile.ship) {
@@ -96,26 +95,29 @@ export class Gameboard {
           (tile) => (tile.isHit = true),
         );
 
-        this.isPrevTileShip = false;
+        this.prevHitShips = [];
       } else {
-        if (!this.isPrevTileShip) {
+        if (this.prevHitShips.length == 0) {
           this.hitDirection = "random";
-          this.prevHitCoords = [y, x];
-          this.isPrevTileShip = true;
+          this.prevHitShips.push([y, x]);
         } else {
-          const [prevY, prevX] = this.prevHitCoords;
+          const [prevY, prevX] = this.prevHitShips.at(-1);
           if (prevY != y) {
             this.hitDirection = "vertical";
           } else if (prevX != x) {
             this.hitDirection = "horizontal";
           }
+          this.prevHitShips.push([y, x]);
+
+          this.prevHitShips.sort((a, b) => {
+            if (this.hitDirection == "vertical") return a[0] - b[0];
+            else if (this.hitDirection == "horizontal") return a[1] - b[1];
+          });
         }
       }
 
-      this.isPrevTileShip = true;
       return true;
     }
-    this.isPrevTileShip = false;
     return false;
   }
 
