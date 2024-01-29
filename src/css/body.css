@@ -10,6 +10,9 @@ body > header {
 }
 
 body > main {
+  --tile-size: calc(15px + 1vw);
+  --ship-bg-color: #aa7800;
+
   flex: 1;
   display: flex;
   justify-content: space-around;
