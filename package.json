@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "startdev": "npx webpack serve --open --mode development",
+    "startdev": "npx nodemon --watch webpack.config.js --exec \"npx webpack serve --open --mode development\"",
     "compilerelease": "npx webpack --mode production",
     "distdeploy-first": "npm run compilerelease && git add . && git commit -m \"dist\" && git subtree push --prefix dist origin gh-pages && rm -rf dist/*",
     "distdeploy-from-second": "npm run compilerelease && git push --delete origin gh-pages && git add . && git commit -m \"dist\" && git subtree push --prefix dist origin gh-pages && rm -rf dist/*"
