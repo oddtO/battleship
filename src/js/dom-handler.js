@@ -8,6 +8,7 @@ export class DOMHandler {
     this.resetBtn.onclick = DOMHandler.#sendResetEvent;
     this.popupList = document.querySelector(".popup-list");
     this.customGameBtn = document.querySelector("button.custom-game");
+
     this.customGameBtn.onclick = this.#showCustomGameMenu.bind(this);
 
     this.calcelCustomGameMenuBtn = document.querySelector(
@@ -23,6 +24,10 @@ export class DOMHandler {
     this.nextPlayerNameElem = document.querySelector(".pass-device .out1");
     this.passDeviceOkBtn = document.querySelector(".pass-device .button-popup");
 
+    this.chgDirBtn = document.querySelector(".turn-dir");
+    this.shipWrapper = document.querySelector(".ship-wrapper");
+    this.#rotateShip.callCount = 0;
+    this.chgDirBtn.onclick = this.#rotateShip.bind(this);
     this.passDeviceOkBtn.addEventListener(
       "click",
       this.hidePassDeviceScreen.bind(this),
@@ -34,6 +39,12 @@ export class DOMHandler {
     this.player2[this.htmlGameboardSymbol] = document.querySelector(".player2");
   }
 
+  #rotateShip() {
+    this.shipWrapper.style.setProperty(
+      "--vertical-or-horizontal",
+      `var(--${++this.#rotateShip.callCount % 2 ? "vertical" : "horizontal"})`,
+    );
+  }
   init() {
     console.log("init");
     this.#createTiles(this.player1);
