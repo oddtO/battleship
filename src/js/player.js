@@ -35,33 +35,37 @@ export class Player {
     this.ownGameboard.placeShip(ship, y, x, shipDirection);
   }
   getShipPlacementOpportunities(ship, direction = "horizontal") {
-    let x_move = 0;
-    let y_move = 0;
-    if (direction === "horizontal") {
-      x_move = 1;
-    } else {
-      y_move = 1;
-    }
-
     const possibleSpots = [];
     for (let y = 0; y < this.ownGameboard.tiles.length; ++y) {
-      coordTest: for (let x = 0; x < this.ownGameboard.tiles[0].length; ++x) {
-        let yCopy = y;
-        let xCopy = x;
-        for (let i = 0; i < ship.length; ++i) {
-          if (!this.isFreeTile(yCopy, xCopy)) {
-            continue coordTest;
-          }
-          yCopy += y_move;
-          xCopy += x_move;
+      for (let x = 0; x < this.ownGameboard.tiles[0].length; ++x) {
+        if (this.doesShipFit(y, x, ship.length, direction)) {
+          possibleSpots.push([y, x]);
         }
-
-        possibleSpots.push([y, x]);
       }
     }
     return possibleSpots;
   }
 
+  doesShipFit(y, x, length, dir) {
+    let x_move = 0;
+    let y_move = 0;
+    if (dir === "horizontal") {
+      x_move = 1;
+    } else {
+      y_move = 1;
+    }
+
+    let yCopy = y;
+    let xCopy = x;
+    for (let i = 0; i < length; ++i) {
+      if (!this.isFreeTile(yCopy, xCopy)) {
+        return false;
+      }
+      yCopy += y_move;
+      xCopy += x_move;
+    }
+    return true;
+  }
   isFreeTile(y, x) {
     const neighboringIndices = [
       [0, 0],
