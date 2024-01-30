@@ -10,9 +10,6 @@ main > :is(.player1, .player2) {
 
 main .row {
   width: 100%;
-
-  --tile-size: calc(15px + 2vw);
-
   height: var(--tile-size);
 }
 
@@ -29,19 +26,8 @@ main .row:last-child > * {
   border-bottom: 1px solid #000;
 }
 
-main .row:not(.letters) > *:not(.number):hover {
-  cursor: pointer;
-
-  /* background-color: #14faf0; */
-  filter: brightness(150%);
-}
-
 main .row > *:last-child {
   border-right: 1px solid #000;
-}
-
-main .row.letters {
-  display: flex;
 }
 
 main .row.letters > *,
@@ -50,6 +36,17 @@ main .row > .number {
   justify-content: center;
   background-color: #fff;
   border: none;
+}
+
+main .row:not(.letters) > *:not(.number):hover {
+  cursor: pointer;
+
+  /* background-color: #14faf0; */
+  filter: brightness(150%);
+}
+
+main .row.letters {
+  display: flex;
 }
 
 main .row > .number {

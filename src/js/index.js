@@ -8,6 +8,7 @@ import "../css/popup.css";
 import "../css/pass-device.css";
 import "../css/custom-game.css";
 import "../css/media.css";
+import "../css/ship-select.css";
 
 import { Game } from "./game.js";
 

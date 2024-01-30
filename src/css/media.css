@@ -4,3 +4,9 @@
     height: 100%;
   }
 }
+
+@media screen and (aspect-ratio >= 1/2) {
+  body > main {
+    --tile-size: calc(1.5vw + 2vh);
+  }
+}

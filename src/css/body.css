@@ -1,3 +1,7 @@
+:root {
+  font-size: 1rem;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -10,7 +14,7 @@ body > header {
 }
 
 body > main {
-  --tile-size: calc(15px + 1vw);
+  --tile-size: 8.5vw;
   --ship-bg-color: #aa7800;
 
   flex: 1;

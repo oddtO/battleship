@@ -5,7 +5,7 @@ main .row > .hit {
 }
 
 main .row > .ship {
-  background-color: #aa7800;
+  background-color: var(--ship-bg-color);
 }
 
 main .row > .ship.hit {
