@@ -6,7 +6,7 @@
 }
 
 @media screen and (aspect-ratio >= 1/2) {
-  body > main {
+  :root {
     --tile-size: calc(1.5vw + 2vh);
   }
 }

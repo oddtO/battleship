@@ -1,5 +1,8 @@
 :root {
   font-size: 1rem;
+
+  --tile-size: 8.5vw;
+  --ship-bg-color: #aa7800;
 }
 
 body {
@@ -14,9 +17,6 @@ body > header {
 }
 
 body > main {
-  --tile-size: 8.5vw;
-  --ship-bg-color: #aa7800;
-
   flex: 1;
   display: flex;
   justify-content: space-around;

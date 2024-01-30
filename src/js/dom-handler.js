@@ -28,6 +28,7 @@ export class DOMHandler {
     this.shipWrapper = document.querySelector(".ship-wrapper");
     this.#rotateShip.callCount = 0;
     this.chgDirBtn.onclick = this.#rotateShip.bind(this);
+    this.shipWrapper.onclick = this.#dragShip.bind(this);
     this.passDeviceOkBtn.addEventListener(
       "click",
       this.hidePassDeviceScreen.bind(this),
@@ -44,6 +45,32 @@ export class DOMHandler {
       "--vertical-or-horizontal",
       `var(--${++this.#rotateShip.callCount % 2 ? "vertical" : "horizontal"})`,
     );
+  }
+
+  #dragShip(event) {
+    const target = event.target;
+
+    if (!target.matches(".ship-tile")) return;
+
+    const curTarget = event.currentTarget;
+    const wrapperBox = curTarget.getBoundingClientRect();
+    const firstTileBox = curTarget.firstElementChild.getBoundingClientRect();
+
+    const offsetTop = firstTileBox.top - wrapperBox.top;
+    const offsetLeft = firstTileBox.left - wrapperBox.left;
+    const draggedShip = curTarget.cloneNode(true);
+    draggedShip.style.position = "absolute";
+    draggedShip.style.zIndex = "9999";
+
+    document.body.append(draggedShip);
+    moveAt(event.clientY, event.clientX);
+    // const firstTile = draggedShip.firstElementChild;
+    document.onpointermove = (event) => moveAt(event.clientY, event.clientX);
+
+    function moveAt(clientY, clientX) {
+      draggedShip.style.top = clientY - offsetTop + "px";
+      draggedShip.style.left = clientX - offsetLeft + "px";
+    }
   }
   init() {
     console.log("init");
