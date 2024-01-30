@@ -29,10 +29,7 @@ export class DOMHandler {
     this.#rotateShip.callCount = 0;
     this.chgDirBtn.onclick = this.#rotateShip.bind(this);
     this.shipWrapper.onclick = this.#dragShip.bind(this);
-    this.passDeviceOkBtn.addEventListener(
-      "click",
-      this.hidePassDeviceScreen.bind(this),
-    );
+    this.passDeviceOkBtn.onclick = this.hidePassDeviceScreen.bind(this);
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
     this.player2[this.enemyPlayerSymbol] = this.player1;
