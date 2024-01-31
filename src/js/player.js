@@ -46,7 +46,7 @@ export class Player {
     return possibleSpots;
   }
 
-  static doesShipFit(gameboard, y, x, length, dir) {
+  doesShipFit(y, x, length, dir) {
     let x_move = 0;
     let y_move = 0;
     if (dir === "horizontal") {
@@ -58,7 +58,7 @@ export class Player {
     let yCopy = y;
     let xCopy = x;
     for (let i = 0; i < length; ++i) {
-      if (!Player.isFreeTile(gameboard, yCopy, xCopy)) {
+      if (!this.isFreeTile(yCopy, xCopy)) {
         return false;
       }
       yCopy += y_move;
@@ -66,7 +66,7 @@ export class Player {
     }
     return true;
   }
-  static isFreeTile(gameboard, y, x) {
+  isFreeTile(y, x) {
     const neighboringIndices = [
       [0, 0],
       [0, 1],
@@ -79,16 +79,19 @@ export class Player {
       [-1, 0],
     ];
 
-    if (y >= gameboard.tiles.length || x >= gameboard.tiles[0].length)
+    if (
+      y >= this.ownGameboard.tiles.length ||
+      x >= this.ownGameboard.tiles[0].length
+    )
       return false;
     for (const [y_offset, x_offset] of neighboringIndices) {
       if (
         y + y_offset !== -1 &&
-        y + y_offset < gameboard.tiles.length &&
+        y + y_offset < this.ownGameboard.tiles.length &&
         x + x_offset !== -1 &&
-        x + x_offset < gameboard.tiles[0].length
+        x + x_offset < this.ownGameboard.tiles[0].length
       ) {
-        const curTile = gameboard.tiles[y + y_offset][x + x_offset];
+        const curTile = this.ownGameboard.tiles[y + y_offset][x + x_offset];
         if (curTile.ship) return false;
       }
     }

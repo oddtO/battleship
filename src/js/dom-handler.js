@@ -4,6 +4,7 @@ export class DOMHandler {
     this.player2 = player2;
     this.htmlGameboardSymbol = Symbol("html-gameboard");
     this.enemyPlayerSymbol = Symbol("enemy-player");
+    this.htmlToPlayerSymbol = Symbol("html-to-player");
     this.resetBtn = document.querySelector("button.reset");
     this.resetBtn.onclick = DOMHandler.#sendResetEvent;
     this.popupList = document.querySelector(".popup-list");
@@ -35,6 +36,10 @@ export class DOMHandler {
     this.player2[this.enemyPlayerSymbol] = this.player1;
     this.player1[this.htmlGameboardSymbol] = document.querySelector(".player1");
     this.player2[this.htmlGameboardSymbol] = document.querySelector(".player2");
+    this.player1[this.htmlGameboardSymbol][this.htmlToPlayerSymbol] =
+      this.player1;
+    this.player2[this.htmlGameboardSymbol][this.htmlToPlayerSymbol] =
+      this.player2;
   }
 
   #rotateShip() {
@@ -58,12 +63,52 @@ export class DOMHandler {
     const draggedShip = curTarget.cloneNode(true);
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
+    draggedShip.style.pointerEvents = "none";
 
     document.body.append(draggedShip);
     moveAt(event.clientY, event.clientX);
     // const firstTile = draggedShip.firstElementChild;
-    document.onpointermove = (event) => moveAt(event.clientY, event.clientX);
+    document.onpointermove = onMouseMove.bind(this);
 
+    function onMouseMove(event) {
+      const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+
+      // draggedShip.hidden = false;
+
+      moveAt(event.clientY, event.clientX);
+      const tile = elemBelow.closest(".tile");
+      if (!tile) return;
+
+      const gameboardHTML = tile.closest("[class^='player']");
+      if (!gameboardHTML) return;
+
+      const player = gameboardHTML[this.htmlToPlayerSymbol];
+
+      const degrees = parseInt(
+        getComputedStyle(draggedShip).getPropertyValue(
+          "--vertical-or-horizontal",
+        ),
+      );
+
+      if (this.highlightedTile !== tile) {
+        this.highlightedTile?.classList.remove("can-place-here");
+        this.highlightedTile?.classList.remove("forbidden-place");
+
+        this.highlightedTile = tile;
+        if (
+          player.doesShipFit(
+            +tile.dataset.y,
+            +tile.dataset.x,
+            draggedShip.children.length,
+            degrees == 90 ? "vertical" : "horizontal",
+          )
+        ) {
+          tile.classList.add("can-place-here");
+        } else {
+          tile.classList.add("forbidden-place");
+        }
+      }
+    }
     function moveAt(clientY, clientX) {
       draggedShip.style.top = clientY - offsetTop + "px";
       draggedShip.style.left = clientX - offsetLeft + "px";

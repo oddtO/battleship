@@ -14,6 +14,16 @@ main .row > .ship.hit {
   background-size: contain;
 }
 
+main .row > .can-place-here {
+  background-image: url("../img/svg/check-mark-black-outline-svgrepo-com.svg") !important;
+  background-size: contain;
+}
+
+main .row > .forbidden-place {
+  background-size: contain;
+  background-image: url("../img/svg/cross-svgrepo-com.svg");
+}
+
 main .row > .hit::before {
   position: absolute;
   top: 50%;
