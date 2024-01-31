@@ -26,10 +26,12 @@ export class DOMHandler {
     this.passDeviceOkBtn = document.querySelector(".pass-device .button-popup");
 
     this.chgDirBtn = document.querySelector(".turn-dir");
+    this.ship = document.querySelector(".ship");
     this.shipWrapper = document.querySelector(".ship-wrapper");
     this.#rotateShip.callCount = 0;
     this.chgDirBtn.onclick = this.#rotateShip.bind(this);
-    this.shipWrapper.onclick = this.#dragShip.bind(this);
+    this.ship.onclick = this.#dragShip.bind(this);
+    this.ship.ondragstart = () => false;
     this.passDeviceOkBtn.onclick = this.hidePassDeviceScreen.bind(this);
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
@@ -43,24 +45,26 @@ export class DOMHandler {
   }
 
   #rotateShip() {
-    this.shipWrapper.style.setProperty(
+    this.ship.style.setProperty(
       "--vertical-or-horizontal",
       `var(--${++this.#rotateShip.callCount % 2 ? "vertical" : "horizontal"})`,
     );
   }
 
-  #dragShip(event) {
+  #initDragShip(event) {
     const target = event.target;
 
-    if (!target.matches(".ship-tile")) return;
-
-    const curTarget = event.currentTarget;
+    if (!target.matches(".ship > .ship-tile")) return;
+    document.onpointerdown = this.#dragShip.bind(this);
+  }
+  #dragShip(event) {
+    const curTarget = this.ship;
     const wrapperBox = curTarget.getBoundingClientRect();
     const firstTileBox = curTarget.firstElementChild.getBoundingClientRect();
 
     const offsetTop = firstTileBox.top - wrapperBox.top;
     const offsetLeft = firstTileBox.left - wrapperBox.left;
-    const draggedShip = curTarget.cloneNode(true);
+    const draggedShip = curTarget;
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
     draggedShip.style.pointerEvents = "none";
@@ -69,6 +73,7 @@ export class DOMHandler {
     moveAt(event.clientY, event.clientX);
     // const firstTile = draggedShip.firstElementChild;
     document.onpointermove = onMouseMove.bind(this);
+    document.onpointerup = this.#leaveShip.bind(this);
 
     function onMouseMove(event) {
       const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
@@ -114,6 +119,17 @@ export class DOMHandler {
       draggedShip.style.top = clientY - offsetTop + "px";
       draggedShip.style.left = clientX - offsetLeft + "px";
     }
+  }
+  #leaveShip(event) {
+    document.onpointermove = null;
+    document.onpointerup = null;
+    this.highlightedTile?.classList.remove("can-place-here");
+    this.highlightedTile?.classList.remove("forbidden-place");
+    this.ship.style.removeProperty("position");
+    this.ship.style.removeProperty("top");
+    this.ship.style.removeProperty("left");
+    this.ship.style.pointerEvents = "auto";
+    this.shipWrapper.append(this.ship);
   }
   init() {
     console.log("init");
