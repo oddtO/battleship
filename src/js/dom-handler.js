@@ -73,6 +73,7 @@ export class DOMHandler {
     function onMouseMove(event) {
       const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
 
+      if (!elemBelow) return;
       // draggedShip.hidden = false;
 
       moveAt(event.clientY, event.clientX);
