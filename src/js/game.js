@@ -48,17 +48,24 @@ export class Game {
     const gameboard1 = new Gameboard(10);
     const gameboard2 = new Gameboard(10);
 
+    const shipSizes = [
+      [4, 1],
+      [3, 2],
+      [2, 3],
+      [1, 4],
+    ];
     this.player1.ownGameboard = this.player2.enemyGameboard = gameboard1;
     this.player2.ownGameboard = this.player1.enemyGameboard = gameboard2;
 
-    this.player1.generateShips();
-    this.player2.generateShips();
+    this.player1.generateShips(shipSizes);
+    this.player2.generateShips(shipSizes);
     this.domHandler = new DOMHandler(this.player1, this.player2);
     this.domHandler.init();
 
     this.domHandler.renderPlayer(this.player1, this.player2);
     this.callCount = 1;
   }
+  async askShipCoords(player, shipSizes) {}
   *[Symbol.asyncIterator]() {
     this.callCount = 0;
     while (true) {

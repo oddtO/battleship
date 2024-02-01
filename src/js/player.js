@@ -15,10 +15,10 @@ export class Player {
     this.enemyGameboard = enemyGameboard;
   }
 
-  generateShips() {
-    const shipSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  generateShips(shipSizes) {
     for (const shipSize of shipSizes) {
-      this.placeShipRandomly(new Ship(shipSize));
+      const [size, count] = shipSize;
+      for (let i = 0; i < count; ++i) this.placeShipRandomly(new Ship(size));
     }
   }
   placeShipRandomly(ship) {
