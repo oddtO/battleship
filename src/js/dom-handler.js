@@ -80,7 +80,12 @@ export class DOMHandler {
 
       moveAt(event.clientY, event.clientX);
       const tile = elemBelow.closest(".tile");
-      if (!tile) return;
+      if (!tile) {
+        this.highlightedTile?.classList.remove("can-place-here");
+        this.highlightedTile?.classList.remove("forbidden-place");
+
+        return;
+      }
 
       const gameboardHTML = tile.closest("[class^='player']");
       if (!gameboardHTML) return;
