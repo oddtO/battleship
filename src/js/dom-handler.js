@@ -45,10 +45,8 @@ export class DOMHandler {
   }
 
   #rotateShip() {
-    this.ship.style.setProperty(
-      "--vertical-or-horizontal",
-      `var(--${++this.#rotateShip.callCount % 2 ? "vertical" : "horizontal"})`,
-    );
+    this.ship.dataset.direction =
+      this.ship.dataset.direction == "horizontal" ? "vertical" : "horizontal";
   }
 
   #initDragShip(event) {
@@ -59,15 +57,14 @@ export class DOMHandler {
   }
   #dragShip(event) {
     const curTarget = this.ship;
-    const wrapperBox = curTarget.getBoundingClientRect();
-    const firstTileBox = curTarget.firstElementChild.getBoundingClientRect();
 
-    const offsetTop = firstTileBox.top - wrapperBox.top;
-    const offsetLeft = firstTileBox.left - wrapperBox.left;
     const draggedShip = curTarget;
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
     draggedShip.style.pointerEvents = "none";
+    const draggedDirSymbol = Symbol("dragged-dir");
+
+    draggedShip[draggedDirSymbol] = this.ship.dataset.direction;
 
     document.body.append(draggedShip);
     moveAt(event.clientY, event.clientX);
@@ -90,12 +87,6 @@ export class DOMHandler {
 
       const player = gameboardHTML[this.htmlToPlayerSymbol];
 
-      const degrees = parseInt(
-        getComputedStyle(draggedShip).getPropertyValue(
-          "--vertical-or-horizontal",
-        ),
-      );
-
       if (this.highlightedTile !== tile) {
         this.highlightedTile?.classList.remove("can-place-here");
         this.highlightedTile?.classList.remove("forbidden-place");
@@ -106,7 +97,7 @@ export class DOMHandler {
             +tile.dataset.y,
             +tile.dataset.x,
             draggedShip.children.length,
-            degrees == 90 ? "vertical" : "horizontal",
+            draggedShip[draggedDirSymbol],
           )
         ) {
           tile.classList.add("can-place-here");
@@ -116,8 +107,8 @@ export class DOMHandler {
       }
     }
     function moveAt(clientY, clientX) {
-      draggedShip.style.top = clientY - offsetTop + "px";
-      draggedShip.style.left = clientX - offsetLeft + "px";
+      draggedShip.style.top = clientY + "px";
+      draggedShip.style.left = clientX + "px";
     }
   }
   #leaveShip(event) {

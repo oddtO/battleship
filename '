@@ -40,46 +40,35 @@
   width: calc(var(--tile-size) * 4);
 }
 
-[data-direction].ship {
+.ship:not(.row > .ship) {
   --horizontal: 0deg;
   --vertical: 90deg;
+  --vertical-or-horizontal: var(--horizontal);
 
   cursor: pointer;
-  display: flex;
-  transform: scale(1);
+  transform: rotate(var(--vertical-or-horizontal)) scale(1);
 
-  /* animation: pulse 1s ease-in-out 0s infinite alternate; */
-}
-
-[data-direction="vertical"].ship:not(.row > .ship) {
-  flex-direction: column;
+  animation: pulse 1s ease-in-out 0s infinite alternate;
 }
 
 @keyframes pulse {
   from {
-    transform: scale(1);
+    transform: rotate(var(--vertical-or-horizontal)) scale(1);
   }
 
   to {
-    transform: scale(0.9);
+    transform: rotate(var(--vertical-or-horizontal)) scale(0.9);
   }
 }
 
-[data-direction].ship > .ship-tile {
+.ship-tile {
   background-color: var(--ship-bg-color);
   height: var(--tile-size);
   width: var(--tile-size);
   border: 1px solid #000;
-}
-
-[data-direction="horizontal"].ship > .ship-tile {
   border-right: none;
 }
 
-[data-direction].ship > .ship-tile:last-child {
+.ship-tile:last-child {
   border: 1px solid #000;
-}
-
-[data-direction="vertical"].ship > .ship-tile {
-  border-bottom: none;
 }
