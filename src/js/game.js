@@ -57,15 +57,24 @@ export class Game {
     this.player1.ownGameboard = this.player2.enemyGameboard = gameboard1;
     this.player2.ownGameboard = this.player1.enemyGameboard = gameboard2;
 
-    this.player1.generateShips(shipSizes);
-    this.player2.generateShips(shipSizes);
     this.domHandler = new DOMHandler(this.player1, this.player2);
     this.domHandler.init();
 
+    this.player1.generateShips(shipSizes);
+    this.player2.generateShips(shipSizes);
     this.domHandler.renderPlayer(this.player1, this.player2);
     this.callCount = 1;
   }
-  async askShipCoords(player, shipSizes) {}
+  async askShipCoords(player, shipSizes) {
+		this.domHandler.enterShipSelectMode(player);
+    for (const shipSize of shipSizes) {
+      const [length, count] = shipSize;
+      for (let i = 0; i < count; ++i) {
+		const [y, x] = await this.domHandler.renderAskShipPlacementCoords(player, length, count);	
+			player.ownGameboard
+			}
+    }
+  }
   *[Symbol.asyncIterator]() {
     this.callCount = 0;
     while (true) {

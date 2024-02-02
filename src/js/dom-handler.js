@@ -26,8 +26,12 @@ export class DOMHandler {
     this.passDeviceOkBtn = document.querySelector(".pass-device .button-popup");
 
     this.chgDirBtn = document.querySelector(".turn-dir");
-    this.ship = document.querySelector(".ship");
+    this.ship = document.querySelector(".ship-select-wrapper .ship");
+    this.shipSelect = document.querySelector(".ship-select-wrapper");
     this.shipWrapper = document.querySelector(".ship-wrapper");
+    this.shipSelectCounter = document.querySelector(
+      ".ship-select-wrapper .counter",
+    );
     this.#rotateShip.callCount = 0;
     this.chgDirBtn.onclick = this.#rotateShip.bind(this);
     this.ship.onclick = this.#dragShip.bind(this);
@@ -44,6 +48,35 @@ export class DOMHandler {
       this.player2;
   }
 
+  enterShipSelectMode(player) {
+    const enemyPlayerGameboard =
+      player[this.enemyPlayerSymbol][this.htmlGameboardSymbol];
+
+    enemyPlayerGameboard.style.setProperty("display", "none");
+    this.shipSelect.style.removeProperty("display");
+    this.ship.innerHTML = "";
+  }
+
+  leaveShipSelectMode() {
+    this.player1[this.htmlGameboardSymbol].style.removeProperty("display");
+    this.player2[this.htmlGameboardSymbol].style.removeProperty("display");
+
+    this.shipSelect.style.setProperty("display", "none");
+  }
+  async renderAskShipPlacementCoords(player, shipLength, lengthCount) {
+    const enemyPlayerAsDummy = player[this.enemyPlayerSymbol];
+
+    for (let i = 0; i < shipLength; ++i) {
+      const div = document.createElement("div");
+      div.className = "ship-tile";
+      this.ship.append(div);
+    }
+    this.shipSelectCounter.textContent = lengthCount;
+
+    const [y, x] = await this.askInput(enemyPlayerAsDummy);
+
+    return [y, x];
+  }
   #rotateShip() {
     this.ship.dataset.direction =
       this.ship.dataset.direction == "horizontal" ? "vertical" : "horizontal";
@@ -62,10 +95,8 @@ export class DOMHandler {
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
     draggedShip.style.pointerEvents = "none";
-    const draggedDirSymbol = Symbol("dragged-dir");
 
-    draggedShip[draggedDirSymbol] = this.ship.dataset.direction;
-
+    this.draggedShipDir = this.ship.dataset.direction;
     document.body.append(draggedShip);
     moveAt(event.clientY, event.clientX);
     // const firstTile = draggedShip.firstElementChild;
@@ -84,6 +115,7 @@ export class DOMHandler {
         this.highlightedTile?.classList.remove("can-place-here");
         this.highlightedTile?.classList.remove("forbidden-place");
 
+        this.highlightedTile = null;
         return;
       }
 
@@ -102,7 +134,7 @@ export class DOMHandler {
             +tile.dataset.y,
             +tile.dataset.x,
             draggedShip.children.length,
-            draggedShip[draggedDirSymbol],
+            this.draggedShipDir,
           )
         ) {
           tile.classList.add("can-place-here");
@@ -126,6 +158,21 @@ export class DOMHandler {
     this.ship.style.removeProperty("left");
     this.ship.style.pointerEvents = "auto";
     this.shipWrapper.append(this.ship);
+
+    const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+    if (!elemBelow) return;
+    const tile = elemBelow.closest(".ship-tile");
+
+    if (!tile) return;
+    document.dispatchEvent(
+      new CustomEvent("ship-placement", {
+        detail: {
+          y: +tile.dataset.y,
+          x: +tile.dataset.x,
+          direction: draggedShip[draggedDirSymbol],
+        },
+      }),
+    );
   }
   init() {
     console.log("init");
