@@ -13,6 +13,7 @@ import "../css/ship-select.css";
 import { Game } from "./game.js";
 
 const game = new Game(false, true);
+await game.startGame(false, true, "player1", "player2");
 
 for await (const player of game) {
   // game.domHandler.renderPlayer(player);

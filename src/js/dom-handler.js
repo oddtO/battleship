@@ -2,11 +2,12 @@ export class DOMHandler {
   constructor(player1, player2) {
     this.player1 = player1;
     this.player2 = player2;
+    this.abortController = new AbortController();
     this.htmlGameboardSymbol = Symbol("html-gameboard");
     this.enemyPlayerSymbol = Symbol("enemy-player");
     this.htmlToPlayerSymbol = Symbol("html-to-player");
     this.resetBtn = document.querySelector("button.reset");
-    this.resetBtn.onclick = DOMHandler.#sendResetEvent;
+    this.resetBtn.onclick = this.#sendResetEvent.bind(this);
     this.popupList = document.querySelector(".popup-list");
     this.customGameBtn = document.querySelector("button.custom-game");
 
@@ -40,12 +41,24 @@ export class DOMHandler {
 
     this.player1[this.enemyPlayerSymbol] = this.player2;
     this.player2[this.enemyPlayerSymbol] = this.player1;
-    this.player1[this.htmlGameboardSymbol] = document.querySelector(".player1");
-    this.player2[this.htmlGameboardSymbol] = document.querySelector(".player2");
+    const gameboards = document.querySelector(".gameboards");
+    gameboards.innerHTML = "";
+
+    const player1Div = document.createElement("div");
+    player1Div.className = "player1";
+    const player2Div = document.createElement("div");
+    player2Div.className = "player2";
+    gameboards.append(player1Div, player2Div);
+
+    this.player1[this.htmlGameboardSymbol] = player1Div;
+    this.player2[this.htmlGameboardSymbol] = player2Div;
     this.player1[this.htmlGameboardSymbol][this.htmlToPlayerSymbol] =
       this.player1;
     this.player2[this.htmlGameboardSymbol][this.htmlToPlayerSymbol] =
       this.player2;
+    /* this.player1[this.htmlGameboardSymbol].style.removeProperty("display");
+    this.player2[this.htmlGameboardSymbol].style.removeProperty("display"); */
+    this.shipSelect.style.removeProperty("display");
   }
 
   enterShipSelectMode(player) {
@@ -63,19 +76,13 @@ export class DOMHandler {
 
     this.shipSelect.style.setProperty("display", "none");
   }
-  async renderAskShipPlacementCoords(player, shipLength, lengthCount) {
-    const enemyPlayerAsDummy = player[this.enemyPlayerSymbol];
-
+  renderAskShipPlacementCoords(shipLength, lengthCount) {
     for (let i = 0; i < shipLength; ++i) {
       const div = document.createElement("div");
       div.className = "ship-tile";
       this.ship.append(div);
     }
     this.shipSelectCounter.textContent = lengthCount;
-
-    const [y, x] = await this.askInput(enemyPlayerAsDummy);
-
-    return [y, x];
   }
   #rotateShip() {
     this.ship.dataset.direction =
@@ -137,8 +144,10 @@ export class DOMHandler {
             this.draggedShipDir,
           )
         ) {
+          this.canPlace = true;
           tile.classList.add("can-place-here");
         } else {
+          this.canPlace = false;
           tile.classList.add("forbidden-place");
         }
       }
@@ -161,15 +170,17 @@ export class DOMHandler {
 
     const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
     if (!elemBelow) return;
-    const tile = elemBelow.closest(".ship-tile");
+    const tile = elemBelow.closest(".tile");
 
     if (!tile) return;
+
+    if (!this.canPlace) return;
     document.dispatchEvent(
       new CustomEvent("ship-placement", {
         detail: {
           y: +tile.dataset.y,
           x: +tile.dataset.x,
-          direction: draggedShip[draggedDirSymbol],
+          direction: this.draggedShipDir,
         },
       }),
     );
@@ -209,7 +220,9 @@ export class DOMHandler {
       }),
     );
     this.#hideCustomGameMenu();
-    this.rejectPrevGame();
+    if (this.rejectPrevGame) {
+      this.rejectPrevGame();
+    }
   }
   #showCustomGameMenu() {
     this.popupList.classList.add("shown");
@@ -221,7 +234,7 @@ export class DOMHandler {
     this.popupList.classList.remove("custom-game");
     // this.popupList.classList.remove("pass-device");
   }
-  static #sendResetEvent() {
+  #sendResetEvent() {
     const resetEvent = new CustomEvent("game-reset");
     document.body.dispatchEvent(resetEvent);
   }
@@ -272,12 +285,17 @@ export class DOMHandler {
     }
   }
 
-  renderPlayer(activePlayer, waitingPlayer) {
+  renderPlayer(activePlayer) {
+    const waitingPlayer = activePlayer[this.enemyPlayerSymbol];
+
+    const syms = Object.getOwnPropertySymbols(activePlayer);
+
+    console.log(syms[0] == this.enemyPlayerSymbol);
     const activePlayerGameboardHTML = activePlayer[this.htmlGameboardSymbol];
     const waitingPlayerGameboardHTML = waitingPlayer[this.htmlGameboardSymbol];
 
-    if (!(activePlayer.isAI || waitingPlayer.isAI))
-      this.showPassDeviceScreen(activePlayer.name);
+    /* if (!(activePlayer.isAI || waitingPlayer.isAI))
+      this.showPassDeviceScreen(activePlayer.name); */
 
     for (let y = 0; y < activePlayer.ownGameboard.tiles.length; ++y) {
       for (let x = 0; x < activePlayer.ownGameboard.tiles[0].length; ++x) {
@@ -305,8 +323,9 @@ export class DOMHandler {
   }
   askInput(player) {
     const enemyPlayer = player[this.enemyPlayerSymbol];
+    console.log("asking input");
     return new Promise((resolve, reject) => {
-      this.rejectPrevGame = reject;
+      this.abortController.signal.onabort = () => reject();
       const resolveInput = (event) => {
         const target = event.target;
         if (target.matches(".tile")) {

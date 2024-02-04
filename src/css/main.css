@@ -8,6 +8,14 @@ main > :is(.player1, .player2) {
   margin: 0 30px;
 }
 
+main .gameboards {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 main .row {
   width: 100%;
   height: var(--tile-size);
