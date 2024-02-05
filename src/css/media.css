@@ -7,6 +7,6 @@
 
 @media screen and (aspect-ratio >= 1/2) {
   :root {
-    --tile-size: calc(1.5vw + 2vh);
+    --tile-size: calc(1vw + 2vh);
   }
 }
