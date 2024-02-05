@@ -21,10 +21,15 @@
 }
 
 .popup-list.pass-device .pass-device,
-.popup-list.custom-game .custom-game {
+.popup-list.custom-game .custom-game,
+.popup-list.game-over-screen .game-over-screen {
   display: flex;
 
   --dark-blue: #000068;
+}
+
+.popup-list.shown:is(.pass-device, .game-over-screen) .popup > * {
+  flex: 1;
 }
 
 .popup {

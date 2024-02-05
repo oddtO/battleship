@@ -9,6 +9,7 @@ import "../css/pass-device.css";
 import "../css/custom-game.css";
 import "../css/media.css";
 import "../css/ship-select.css";
+import "../css/game-over-screen.css";
 
 import { Game } from "./game.js";
 
