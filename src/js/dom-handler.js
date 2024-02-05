@@ -29,6 +29,9 @@ export class DOMHandler {
     this.chgDirBtn = document.querySelector(".turn-dir");
     this.ship = document.querySelector(".ship-select-wrapper .ship");
     this.shipSelect = document.querySelector(".ship-select-wrapper");
+    this.shuffleBtn = document.querySelector('button[value="shuffle"]');
+
+    this.shuffleBtn.onclick = this.#randomPlacementDispatcher;
     this.shipWrapper = document.querySelector(".ship-wrapper");
     this.shipSelectCounter = document.querySelector(
       ".ship-select-wrapper .counter",
@@ -61,13 +64,15 @@ export class DOMHandler {
     this.shipSelect.style.removeProperty("display");
   }
 
+  #randomPlacementDispatcher() {
+    document.dispatchEvent(new CustomEvent("random-placement"));
+  }
   enterShipSelectMode(player) {
     const enemyPlayerGameboard =
       player[this.enemyPlayerSymbol][this.htmlGameboardSymbol];
 
     enemyPlayerGameboard.style.setProperty("display", "none");
     this.shipSelect.style.removeProperty("display");
-    this.ship.innerHTML = "";
   }
 
   leaveShipSelectMode() {
@@ -77,6 +82,7 @@ export class DOMHandler {
     this.shipSelect.style.setProperty("display", "none");
   }
   renderAskShipPlacementCoords(shipLength, lengthCount) {
+    this.ship.innerHTML = "";
     for (let i = 0; i < shipLength; ++i) {
       const div = document.createElement("div");
       div.className = "ship-tile";

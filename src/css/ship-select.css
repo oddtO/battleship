@@ -54,7 +54,8 @@
   cursor: pointer;
   display: flex;
   transform: scale(1);
-  animation: pulse 1s ease-in-out 0s infinite alternate;
+
+  /* animation: pulse 1s ease-in-out 0s infinite alternate; */
 }
 
 [data-direction="vertical"].ship:not(.row > .ship) {
@@ -82,10 +83,10 @@
   border-right: none;
 }
 
-[data-direction].ship > .ship-tile:last-child {
-  border: 1px solid #000;
-}
-
 [data-direction="vertical"].ship > .ship-tile {
   border-bottom: none;
+}
+
+[data-direction].ship > .ship-tile:last-child {
+  border: 1px solid #000;
 }

@@ -76,26 +76,54 @@ export class Game {
     this.callCount = 0;
   }
   async askShipCoordsAndPlace(player, shipSizes) {
+    let userAskedRandom = false;
+    this.domHandler.enterShipSelectMode(player);
     for (const shipSize of shipSizes) {
       const [length, count] = shipSize;
       for (let i = 0; i < count; ++i) {
-        this.domHandler.enterShipSelectMode(player);
+        if (userAskedRandom) {
+          player.placeShipRandomly(new Ship(length));
+          continue;
+        }
         this.domHandler.renderAskShipPlacementCoords(length, count - i);
 
-        const [y, x, direction] = await this.awaitShipCoords();
+        let y, x, direction;
+
+        try {
+          [y, x, direction] = await this.awaitShipCoords();
+        } catch (error) {
+          if (error.message === "random-placement-start") {
+            userAskedRandom = true;
+            player.placeShipRandomly(new Ship(length));
+            continue;
+          } else {
+            throw error;
+          }
+        }
         player.ownGameboard.placeShip(new Ship(length), y, x, direction);
+
         this.domHandler.renderPlayer(player);
-        this.domHandler.leaveShipSelectMode();
       }
     }
+
+    this.domHandler.leaveShipSelectMode();
   }
   awaitShipCoords() {
     return new Promise((resolve, reject) => {
       document.addEventListener("ship-placement", shipCoordsHandler);
       this.abortController.signal.onabort = () => reject();
+      document.addEventListener("random-placement", randomPlacementHandler);
       function shipCoordsHandler(event) {
         document.removeEventListener("ship-placement", shipCoordsHandler);
         resolve([event.detail.y, event.detail.x, event.detail.direction]);
+      }
+      function randomPlacementHandler() {
+        document.removeEventListener(
+          "random-placement",
+          randomPlacementHandler,
+        );
+        const error = new Error("random-placement-start");
+        reject(error);
       }
     });
   }
