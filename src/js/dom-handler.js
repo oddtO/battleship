@@ -36,7 +36,7 @@ export class DOMHandler {
     );
 
     this.gameOverRestartBtn = document.querySelector(
-      ".game-over-screen .button-popup",
+      '.game-over-screen [data-function="restart"]',
     );
     this.gameOverRestartBtn.onclick = this.#sendResetEvent.bind(this);
 
