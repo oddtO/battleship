@@ -31,6 +31,10 @@ export class DOMHandler {
     this.shipSelect = document.querySelector(".ship-select-wrapper");
     this.shuffleBtn = document.querySelector('button[value="shuffle"]');
 
+    this.instructionPlayerNamePlaceholder = document.querySelector(
+      ".instruction > .out1",
+    );
+
     this.shuffleBtn.onclick = this.#randomPlacementDispatcher;
     this.shipWrapper = document.querySelector(".ship-wrapper");
     this.shipSelectCounter = document.querySelector(
@@ -68,6 +72,7 @@ export class DOMHandler {
     document.dispatchEvent(new CustomEvent("random-placement"));
   }
   enterShipSelectMode(player) {
+    this.instructionPlayerNamePlaceholder.textContent = player.name;
     const enemyPlayerGameboard =
       player[this.enemyPlayerSymbol][this.htmlGameboardSymbol];
 
