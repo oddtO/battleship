@@ -35,7 +35,16 @@ export class DOMHandler {
       ".instruction > .out1",
     );
 
+    this.gameOverRestartBtn = document.querySelector(
+      ".game-over-screen .button-popup",
+    );
+    this.gameOverRestartBtn.onclick = this.#sendResetEvent.bind(this);
+
+    this.winningPlayerNameSpan = document.querySelector(
+      ".game-over-screen .out1",
+    );
     this.shuffleBtn.onclick = this.#randomPlacementDispatcher;
+
     this.shipWrapper = document.querySelector(".ship-wrapper");
     this.shipSelectCounter = document.querySelector(
       ".ship-select-wrapper .counter",
@@ -68,6 +77,17 @@ export class DOMHandler {
     this.shipSelect.style.removeProperty("display");
   }
 
+  showGameOverScreen(winningPlayer) {
+    this.renderPlayer(winningPlayer);
+    this.popupList.classList.add("shown");
+    this.popupList.classList.add("game-over-screen");
+
+    this.winningPlayerNameSpan.textContent = winningPlayer.name;
+
+    return new Promise((resolve) => {
+      this.abortController.signal.onabort = resolve;
+    });
+  }
   #randomPlacementDispatcher() {
     document.dispatchEvent(new CustomEvent("random-placement"));
   }
@@ -239,6 +259,7 @@ export class DOMHandler {
     this.popupList.classList.add("shown");
     this.popupList.classList.add("custom-game");
     this.popupList.classList.remove("pass-device");
+    this.popupList.classList.remove("game-over-screen");
   }
   #hideCustomGameMenu() {
     this.popupList.classList.remove("shown");

@@ -19,4 +19,8 @@ await game.startGame(false, true, "player1", "player2");
 for await (const player of game) {
   // game.domHandler.renderPlayer(player);
   await game.getInput(player);
+
+  if (player.enemyGameboard.areAllShipsDestroyed()) {
+    await game.domHandler.showGameOverScreen(player);
+  }
 }

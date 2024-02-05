@@ -2,3 +2,7 @@
   width: 30%;
   height: 40%;
 }
+
+.game-over-screen .popup .buttons {
+  align-items: flex-end;
+}
