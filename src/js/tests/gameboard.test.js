@@ -41,12 +41,12 @@ describe("gameboard", () => {
     for (let i = 1; i < shipLength; ++i) {
       gameboard.receiveAttack(y, x + i);
     }
-    expect(gameboard.areAllShipDestroyed()).toBeFalsy();
+    expect(gameboard.areAllShipsDestroyed()).toBeFalsy();
     for (let i = 0; i < shipLength; ++i) {
       gameboard.receiveAttack(y2 + i, x2);
     }
 
     console.log(gameboard.tiles);
-    expect(gameboard.areAllShipDestroyed()).toBeTruthy();
+    expect(gameboard.areAllShipsDestroyed()).toBeTruthy();
   });
 });

@@ -40,6 +40,10 @@ export class DOMHandler {
     );
     this.gameOverRestartBtn.onclick = this.#sendResetEvent.bind(this);
 
+    this.hideGameOverScreenBtn = document.querySelector(
+      '.game-over-screen [data-function="hide"]',
+    );
+    this.hideGameOverScreenBtn.onclick = this.hideGameOverScreen.bind(this);
     this.winningPlayerNameSpan = document.querySelector(
       ".game-over-screen .out1",
     );
@@ -87,6 +91,11 @@ export class DOMHandler {
     return new Promise((resolve) => {
       this.abortController.signal.onabort = resolve;
     });
+  }
+
+  hideGameOverScreen() {
+    this.popupList.classList.remove("shown");
+    this.popupList.classList.remove("game-over-screen");
   }
   #randomPlacementDispatcher() {
     document.dispatchEvent(new CustomEvent("random-placement"));

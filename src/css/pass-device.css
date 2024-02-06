@@ -31,7 +31,3 @@
 .popup .button-popup {
   margin-bottom: 20px;
 }
-
-.popup-list.shown.pass-device .popup > * {
-  flex: 1;
-}
