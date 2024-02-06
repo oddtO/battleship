@@ -16,6 +16,7 @@ body {
 body > header {
   flex: 0.2;
   background-color: #059bb9;
+  min-height: 125px;
 }
 
 body > main {
