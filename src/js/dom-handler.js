@@ -150,6 +150,7 @@ export class DOMHandler {
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
     draggedShip.style.pointerEvents = "none";
+    draggedShip.style.animationPlayState = "paused";
 
     this.draggedShipDir = this.ship.dataset.direction;
     document.body.append(draggedShip);
@@ -214,6 +215,7 @@ export class DOMHandler {
     this.ship.style.removeProperty("top");
     this.ship.style.removeProperty("left");
     this.ship.style.removeProperty("pointer-events");
+    this.ship.style.removeProperty("animation-play-state");
     this.shipWrapper.append(this.ship);
 
     const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
