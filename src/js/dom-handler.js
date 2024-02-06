@@ -117,9 +117,12 @@ export class DOMHandler {
 
   leaveShipSelectMode(player) {
     const playerGameboard = player[this.htmlGameboardSymbol];
-    playerGameboard.style.removeProperty("display");
     playerGameboard.style.removeProperty("pointer-events");
 
+    const enemyPlayerGameboard =
+      player[this.enemyPlayerSymbol][this.htmlGameboardSymbol];
+
+    enemyPlayerGameboard.style.removeProperty("display");
     this.shipSelect.style.setProperty("display", "none");
   }
   renderAskShipPlacementCoords(shipLength, lengthCount) {
