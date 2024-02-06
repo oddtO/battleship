@@ -17,7 +17,6 @@ export class Game {
   async startGame(isAI1, isAI2, player1Name, player2Name) {
     this.abortController?.abort();
     this.domHandler?.abortController.abort();
-    this.domHandler?.leaveShipSelectMode();
     this.abortController = new AbortController();
     const gameboard1 = new Gameboard(10);
     const gameboard2 = new Gameboard(10);
@@ -78,6 +77,8 @@ export class Game {
     this.domHandler = new DOMHandler(this.player1, this.player2);
     this.domHandler.init();
 
+    this.domHandler.leaveShipSelectMode(this.player1);
+    this.domHandler.leaveShipSelectMode(this.player2);
     this.domHandler.renderPlayer(this.player1);
     this.callCount = 0;
   }
@@ -112,7 +113,7 @@ export class Game {
       }
     }
 
-    this.domHandler.leaveShipSelectMode();
+    this.domHandler.leaveShipSelectMode(player);
   }
   awaitShipCoords() {
     return new Promise((resolve, reject) => {

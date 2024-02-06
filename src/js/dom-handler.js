@@ -107,13 +107,18 @@ export class DOMHandler {
     const enemyPlayerGameboard =
       player[this.enemyPlayerSymbol][this.htmlGameboardSymbol];
 
+    this.curPlayerGameboard = player[this.htmlGameboardSymbol];
+
+    this.curPlayerGameboard.style.pointerEvents = "none";
+
     enemyPlayerGameboard.style.setProperty("display", "none");
     this.shipSelect.style.removeProperty("display");
   }
 
-  leaveShipSelectMode() {
-    this.player1[this.htmlGameboardSymbol].style.removeProperty("display");
-    this.player2[this.htmlGameboardSymbol].style.removeProperty("display");
+  leaveShipSelectMode(player) {
+    const playerGameboard = player[this.htmlGameboardSymbol];
+    playerGameboard.style.removeProperty("display");
+    playerGameboard.style.removeProperty("pointer-events");
 
     this.shipSelect.style.setProperty("display", "none");
   }
@@ -140,6 +145,7 @@ export class DOMHandler {
   #dragShip(event) {
     const curTarget = this.ship;
 
+    this.curPlayerGameboard.style.removeProperty("pointer-events");
     const draggedShip = curTarget;
     draggedShip.style.position = "absolute";
     draggedShip.style.zIndex = "9999";
@@ -207,10 +213,11 @@ export class DOMHandler {
     this.ship.style.removeProperty("position");
     this.ship.style.removeProperty("top");
     this.ship.style.removeProperty("left");
-    this.ship.style.pointerEvents = "auto";
+    this.ship.style.removeProperty("pointer-events");
     this.shipWrapper.append(this.ship);
 
     const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+    this.curPlayerGameboard.style.pointerEvents = "none";
     if (!elemBelow) return;
     const tile = elemBelow.closest(".tile");
 
