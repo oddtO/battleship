@@ -16,7 +16,8 @@ export class Game {
 
   async startGame(isAI1, isAI2, player1Name, player2Name) {
     this.abortController?.abort();
-    this?.domHandler?.abortController.abort();
+    this.domHandler?.abortController.abort();
+    this.domHandler?.leaveShipSelectMode();
     this.abortController = new AbortController();
     const gameboard1 = new Gameboard(10);
     const gameboard2 = new Gameboard(10);

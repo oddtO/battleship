@@ -78,7 +78,6 @@ export class DOMHandler {
       this.player2;
     /* this.player1[this.htmlGameboardSymbol].style.removeProperty("display");
     this.player2[this.htmlGameboardSymbol].style.removeProperty("display"); */
-    this.shipSelect.style.removeProperty("display");
   }
 
   showGameOverScreen(winningPlayer) {
@@ -89,7 +88,10 @@ export class DOMHandler {
     this.winningPlayerNameSpan.textContent = winningPlayer.name;
 
     return new Promise((resolve) => {
-      this.abortController.signal.onabort = resolve;
+      this.abortController.signal.onabort = () => {
+        this.hideGameOverScreen();
+        resolve();
+      };
     });
   }
 
