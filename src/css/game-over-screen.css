@@ -1,5 +1,5 @@
 .popup-list.game-over-screen .popup {
-  width: 30%;
+  width: max(30%, 300px);
   height: 40%;
 }
 
