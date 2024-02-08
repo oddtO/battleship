@@ -277,7 +277,6 @@ export class DOMHandler {
     );
   }
   init() {
-    console.log("init");
     this.#createTiles(this.player1);
     this.#createTiles(this.player2);
   }
@@ -382,7 +381,6 @@ export class DOMHandler {
 
     const syms = Object.getOwnPropertySymbols(activePlayer);
 
-    console.log(syms[0] == this.enemyPlayerSymbol);
     const activePlayerGameboardHTML = activePlayer[this.htmlGameboardSymbol];
     const waitingPlayerGameboardHTML = waitingPlayer[this.htmlGameboardSymbol];
 
@@ -415,7 +413,6 @@ export class DOMHandler {
   }
   askInput(player) {
     const enemyPlayer = player[this.enemyPlayerSymbol];
-    console.log("asking input");
     return new Promise((resolve, reject) => {
       this.abortController.signal.onabort = () => reject();
       const resolveInput = (event) => {

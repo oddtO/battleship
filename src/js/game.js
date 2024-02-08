@@ -29,7 +29,6 @@ export class Game {
   async getInput(player) {
     const coordsPromise = this.domHandler.askInput(player);
     if (player.isAI) {
-      console.log("ai");
       this.domHandler.sendInput(player, ...player.getRandomCoords());
     }
     let y, x;
@@ -50,7 +49,6 @@ export class Game {
 
   addEventListeners() {
     document.body.addEventListener("game-reset", () => {
-      console.log("bbb");
       this.startGame(
         this.player1.isAI,
         this.player2.isAI,

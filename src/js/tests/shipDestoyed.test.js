@@ -34,5 +34,4 @@ test("when ship is destroyed, all its neighboring tiles count as being hit", () 
       ).toBeTruthy();
     }
   }
-  console.log(gameboard);
 });

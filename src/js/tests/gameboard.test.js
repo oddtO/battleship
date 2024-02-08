@@ -46,7 +46,6 @@ describe("gameboard", () => {
       gameboard.receiveAttack(y2 + i, x2);
     }
 
-    console.log(gameboard.tiles);
     expect(gameboard.areAllShipsDestroyed()).toBeTruthy();
   });
 });
