@@ -172,6 +172,8 @@ export class DOMHandler {
       for (const tile of tilesToHighlight) {
         highlightTileBind(curPlayer, tile);
       }
+
+      this.curPlayerGameboard.onclick = this.#leaveShip.bind(this);
     }
     function highlightTile(player, tile) {
       if (
@@ -252,7 +254,18 @@ export class DOMHandler {
 
     if (!tile) return;
 
-    if (!this.canPlace) return;
+    const curPlayer = this.curPlayerGameboard[this.htmlToPlayerSymbol];
+    if (
+      !curPlayer.doesShipFit(
+        +tile.dataset.y,
+        +tile.dataset.x,
+        this.ship.children.length,
+        this.draggedShipDir,
+      )
+    )
+      return;
+
+    // if (!this.canPlace) return;
     document.dispatchEvent(
       new CustomEvent("ship-placement", {
         detail: {
