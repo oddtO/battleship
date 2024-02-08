@@ -3,9 +3,13 @@
     width: 100% !important;
     height: 100% !important;
   }
+
+  body {
+    overflow: auto;
+  }
 }
 
-@media screen and (aspect-ratio >= 1/2) {
+@media screen and (aspect-ratio >= 1300/2160) {
   :root {
     --tile-size: calc(1vw + 2vh);
   }
