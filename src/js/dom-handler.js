@@ -162,6 +162,33 @@ export class DOMHandler {
     document.onpointermove = onMouseMove.bind(this);
     document.onpointerup = this.#leaveShip.bind(this);
 
+    if (event.pointerType == "touch") {
+      const curPlayer = this.curPlayerGameboard[this.htmlToPlayerSymbol];
+
+      const highlightTileBind = highlightTile.bind(this);
+      const tilesToHighlight =
+        this.curPlayerGameboard.querySelectorAll(".tile");
+
+      for (const tile of tilesToHighlight) {
+        highlightTileBind(curPlayer, tile);
+      }
+    }
+    function highlightTile(player, tile) {
+      if (
+        player.doesShipFit(
+          +tile.dataset.y,
+          +tile.dataset.x,
+          draggedShip.children.length,
+          this.draggedShipDir,
+        )
+      ) {
+        this.canPlace = true;
+        tile.classList.add("can-place-here");
+      } else {
+        this.canPlace = false;
+        tile.classList.add("forbidden-place");
+      }
+    }
     function onMouseMove(event) {
       const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
 
@@ -188,21 +215,11 @@ export class DOMHandler {
         this.highlightedTile?.classList.remove("forbidden-place");
 
         this.highlightedTile = tile;
-        if (
-          player.doesShipFit(
-            +tile.dataset.y,
-            +tile.dataset.x,
-            draggedShip.children.length,
-            this.draggedShipDir,
-          )
-        ) {
-          this.canPlace = true;
-          tile.classList.add("can-place-here");
-        } else {
-          this.canPlace = false;
-          tile.classList.add("forbidden-place");
-        }
       }
+
+      const highlightTileBind = highlightTile.bind(this);
+
+      highlightTileBind(player, tile);
     }
     function moveAt(clientY, clientX) {
       draggedShip.style.top = clientY + "px";
@@ -221,6 +238,13 @@ export class DOMHandler {
     this.ship.style.removeProperty("animation-play-state");
     this.shipWrapper.append(this.ship);
 
+    const highlightedTiles = this.curPlayerGameboard.querySelectorAll(".tile");
+
+    for (const tile of highlightedTiles) {
+      tile.classList.remove("can-place-here");
+
+      tile.classList.remove("forbidden-place");
+    }
     const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
     this.curPlayerGameboard.style.pointerEvents = "none";
     if (!elemBelow) return;
