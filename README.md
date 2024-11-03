@@ -25,11 +25,15 @@ You will need `Node.js` and `npm` installed globally on your machine.
    ```sh
    npm install
    ```
-3. Run dev server on http://localhost:8080
+3. Run tests
+   ```sh
+   npm run test
+   ```
+4. Run dev server on http://localhost:8080
    ```sh
    npm run startdev
    ```
-4. Compile for production
+5. Compile for production
    ```sh
    npm run compilerelease
    ```
@@ -68,6 +72,7 @@ You will need `Node.js` and `npm` installed globally on your machine.
 * CSS
 * HTML
 * Webpack
+* Jest
 * Git
 
 
